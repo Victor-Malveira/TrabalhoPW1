@@ -3,11 +3,11 @@ from selenium.webdriver.common.by import By
 import time
 
 driver = webdriver.Chrome()
-#python testeEmpresa.py para executar
+
 try:
 
     # ==========================================
-    # 1 - CADASTRAR
+    # 1 - CADASTRO
     # ==========================================
 
     print("Abrindo cadastro...")
@@ -34,7 +34,33 @@ try:
 
 
     # ==========================================
-    # 2 - BUSCAR EMPRESA
+    # 2 - LOGIN / AUTENTICAÇÃO
+    # ==========================================
+
+    print("Abrindo tela de login...")
+    driver.get("http://localhost/gestao/telas/autenticar.html")
+    time.sleep(2)
+
+    print("Preenchendo login...")
+
+    driver.find_element(By.NAME, "email").send_keys("selenium@gmail.com")
+    time.sleep(1)
+
+    driver.find_element(By.NAME, "senha").send_keys("123456")
+    time.sleep(2)
+
+    print("Autenticando...")
+    driver.find_element(By.TAG_NAME, "button").click()
+    time.sleep(3)
+
+    print("Login realizado!")
+    print("URL atual:", driver.current_url)
+
+    time.sleep(2)
+
+
+    # ==========================================
+    # 3 - BUSCAR EMPRESA
     # ==========================================
 
     print("Abrindo busca...")
@@ -42,6 +68,7 @@ try:
     time.sleep(2)
 
     print("Pesquisando empresa...")
+
     campo_pesquisa = driver.find_element(By.NAME, "pesquisa")
     campo_pesquisa.send_keys("Empresa Selenium")
     time.sleep(2)
@@ -49,9 +76,11 @@ try:
     driver.find_element(By.TAG_NAME, "button").click()
     time.sleep(3)
 
+    print("Empresa encontrada!")
+
 
     # ==========================================
-    # 3 - EDITAR
+    # 4 - EDITAR EMPRESA
     # ==========================================
 
     print("Abrindo edição...")
@@ -62,7 +91,6 @@ try:
 
     campo_nome = driver.find_element(By.NAME, "nome")
 
-    # Apaga o nome antigo
     campo_nome.clear()
     time.sleep(1)
 
@@ -75,7 +103,7 @@ try:
 
 
     # ==========================================
-    # 4 - NOVA BUSCA PARA VERIFICAR A EDIÇÃO
+    # 5 - NOVA BUSCA
     # ==========================================
 
     print("Fazendo nova busca para verificar a alteração...")
@@ -90,7 +118,11 @@ try:
     driver.find_element(By.TAG_NAME, "button").click()
     time.sleep(3)
 
-    # Verifica se o nome alterado aparece
+
+    # ==========================================
+    # 6 - VERIFICAR EDIÇÃO
+    # ==========================================
+
     texto_pagina = driver.page_source
 
     if "Empresa Selenium Editada" in texto_pagina:
@@ -98,12 +130,14 @@ try:
     else:
         print("✗ A edição não foi encontrada!")
 
+    time.sleep(2)
+
 
     # ==========================================
-    # 5 - EXCLUIR
+    # 7 - EXCLUIR
     # ==========================================
 
-    print("Preparando para excluir...")
+    print("Excluindo empresa...")
     time.sleep(2)
 
     driver.find_element(By.LINK_TEXT, "Excluir").click()
@@ -111,10 +145,11 @@ try:
 
 
     # ==========================================
-    # 6 - CONFIRMAR ALERTA
+    # 8 - CONFIRMAR ALERTA
     # ==========================================
 
     try:
+
         alerta = driver.switch_to.alert
 
         print("Mensagem:", alerta.text)
@@ -123,28 +158,31 @@ try:
 
         alerta.accept()
 
-        print("✓ Exclusão confirmada!")
+        print("✓ Empresa excluída!")
 
     except:
         print("Nenhum alerta encontrado.")
-
 
     time.sleep(3)
 
 
     # ==========================================
-    # 7 - FINAL
+    # FINAL
     # ==========================================
 
-    print("Teste concluído!")
+    print("================================")
+    print("TESTE CONCLUÍDO!")
+    print("================================")
 
     input("Pressione ENTER para fechar o navegador...")
 
 
 except Exception as erro:
 
+    print("================================")
     print("ERRO:")
     print(erro)
+    print("================================")
 
     input("Pressione ENTER para fechar o navegador...")
 
