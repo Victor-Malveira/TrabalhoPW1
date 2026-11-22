@@ -112,6 +112,13 @@ $dto->telefone = $dados->telefone ?? '';
 $dto->formatoCurriculo = $dados->formatoCurriculo ?? '';
 try {
 (new CandidatoControlador())->editar($dto);
+session_start();
+if (isset($_SESSION['candidato']) && $_SESSION['candidato']->getId() == $dto->id) {
+    $_SESSION['candidato']->setNome($dto->nome);
+    $_SESSION['candidato']->setEmail($dto->email);
+    $_SESSION['candidato']->setTelefone($dto->telefone);
+    $_SESSION['candidato']->setFormatoCurriculo($dto->formatoCurriculo);
+}
 http_response_code(200); echo json_encode(['sucesso'=>true,'mensagem'=>'Operação realizada com sucesso','redirecionar'=>'../telas/homeCandidato.php'], JSON_UNESCAPED_UNICODE);
 } catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
 break;
