@@ -16,12 +16,12 @@ $candidato = $candidatoControlador->buscarPeloId($id);
 <body>
     <h1>Editar Candidato</h1>
     <form>
-        <input type="hidden" name="id" value="<?= $candidato- id="id">getId(); ?>">
-        Nome:<input type="text" name="nome" value="<?= $candidato- id="nome">getNome(); ?>">
+        <input type="hidden" name="id" id="id" value="<?= $candidato->getId(); ?>">
+        Nome:<input type="text" name="nome" id="nome" value="<?= $candidato->getNome(); ?>">
         <br><br>
-        Email:<input type="email" name="email" value="<?= $candidato- id="email">getEmail(); ?>">
+        Email:<input type="email" name="email" id="email" value="<?= $candidato->getEmail(); ?>">
         <br><br>
-        Telefone:<input type="text" name="telefone" value="<?= $candidato- id="telefone">getTelefone(); ?>">
+        Telefone:<input type="text" name="telefone" id="telefone" value="<?= $candidato->getTelefone(); ?>">
         <br><br>
         Formato do currículo:
         <select name="formatoCurriculo" id="formatoCurriculo">
