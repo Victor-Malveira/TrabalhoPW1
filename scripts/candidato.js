@@ -1,5 +1,3 @@
-// Funções do modelo candidato, seguindo o padrão simples do agenda.
-
 async function salvarCandidato() {
     const nome = document.getElementById("nome")?.value ?? "";
     const email = document.getElementById("email")?.value ?? "";
