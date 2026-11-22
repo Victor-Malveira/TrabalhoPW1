@@ -1,5 +1,3 @@
-// Funções do modelo avaliacao, seguindo o padrão simples do agenda.
-
 async function salvarAvaliacao(formulario) {
     const empresaId = formulario.elements.namedItem("empresaId")?.value ?? "";
     const nota = formulario.elements.namedItem("nota")?.value ?? "";
