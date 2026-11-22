@@ -10,6 +10,10 @@ async function salvarEmpresa() {
     const email = document.getElementById("email")?.value ?? "";
     const senha = document.getElementById("senha")?.value ?? "";
     const telefone = document.getElementById("telefone")?.value ?? "";
+    if (!nome.trim() || !email.trim() || !senha.trim() || !telefone.trim()) {
+        mostrarMensagemEmpresa("Preencha nome, e-mail, senha e telefone.", false);
+        return;
+    }
     const empresa = { nome, email, senha, telefone };
     try {
         const resposta = await fetch("../controladores/rota.php?acao=salvarEmpresa", {
@@ -35,6 +39,10 @@ async function salvarEmpresa() {
 async function autenticar() {
     const email = document.getElementById("email")?.value ?? "";
     const senha = document.getElementById("senha")?.value ?? "";
+    if (!email.trim() || !senha.trim()) {
+        mostrarMensagemEmpresa("Preencha e-mail e senha.", false);
+        return;
+    }
     const empresa = { email, senha };
     try {
         const resposta = await fetch("../controladores/rota.php?acao=autenticar", {

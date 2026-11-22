@@ -10,6 +10,12 @@ $acao = $_GET['acao'] ?? '';
 $dados = json_decode(file_get_contents('php://input'));
 switch ($acao) {
 case "salvarEmpresa":
+if (trim($dados->nome ?? '') === '' || trim($dados->email ?? '') === '' ||
+    trim($dados->senha ?? '') === '' || trim($dados->telefone ?? '') === '') {
+    http_response_code(400);
+    echo json_encode(['sucesso'=>false, 'mensagem'=>'Preencha nome, e-mail, senha e telefone.'], JSON_UNESCAPED_UNICODE);
+    break;
+}
 $dto = new EmpresaDTO();
 $dto->nome = $dados->nome ?? '';
 $dto->email = $dados->email ?? '';
@@ -21,6 +27,11 @@ http_response_code(201); echo json_encode(['sucesso'=>true,'mensagem'=>'OperaÃ§Ã
 } catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
 break;
 case "autenticar":
+if (trim($dados->email ?? '') === '' || trim($dados->senha ?? '') === '') {
+    http_response_code(400);
+    echo json_encode(['sucesso'=>false, 'mensagem'=>'Preencha e-mail e senha.'], JSON_UNESCAPED_UNICODE);
+    break;
+}
 $dto = new EmpresaDTO();
 $dto->email = $dados->email ?? '';
 $dto->senha = $dados->senha ?? '';
