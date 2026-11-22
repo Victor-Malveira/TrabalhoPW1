@@ -1,3 +1,10 @@
+function mostrarMensagemAvaliacao(texto, sucesso, formulario = null) {
+    const mensagem = formulario ? formulario.querySelector(".mensagem-avaliacao") : document.getElementById("mensagem");
+    if (!mensagem) return;
+    mensagem.textContent = texto;
+    mensagem.style.color = sucesso ? "green" : "red";
+}
+
 async function salvarAvaliacao(formulario) {
     const empresaId = formulario.elements.namedItem("empresaId")?.value ?? "";
     const nota = formulario.elements.namedItem("nota")?.value ?? "";
@@ -15,13 +22,16 @@ async function salvarAvaliacao(formulario) {
         });
         const dados = await resposta.json();
         if (resposta.ok && dados.sucesso) {
-            alert(dados.mensagem);
-            if (dados.redirecionar) window.location.href = new URL(dados.redirecionar, resposta.url).href;
+            mostrarMensagemAvaliacao(dados.mensagem, true, formulario);
+            if (dados.redirecionar) {
+                const destino = new URL(dados.redirecionar, resposta.url).href;
+                setTimeout(() => { window.location.href = destino; }, 1500);
+            }
         } else {
-            alert(dados.mensagem || "Não foi possível realizar a operação.");
+            mostrarMensagemAvaliacao(dados.mensagem || "Não foi possível realizar a operação.", false, formulario);
         }
     } catch (erro) {
-        alert(erro.message);
+        mostrarMensagemAvaliacao(erro.message, false, formulario);
     }
 }
 
@@ -42,13 +52,16 @@ async function editarAvaliacao() {
         });
         const dados = await resposta.json();
         if (resposta.ok && dados.sucesso) {
-            alert(dados.mensagem);
-            if (dados.redirecionar) window.location.href = new URL(dados.redirecionar, resposta.url).href;
+            mostrarMensagemAvaliacao(dados.mensagem, true);
+            if (dados.redirecionar) {
+                const destino = new URL(dados.redirecionar, resposta.url).href;
+                setTimeout(() => { window.location.href = destino; }, 1500);
+            }
         } else {
-            alert(dados.mensagem || "Não foi possível realizar a operação.");
+            mostrarMensagemAvaliacao(dados.mensagem || "Não foi possível realizar a operação.", false);
         }
     } catch (erro) {
-        alert(erro.message);
+        mostrarMensagemAvaliacao(erro.message, false);
     }
 }
 
@@ -63,13 +76,16 @@ async function excluirAvaliacao() {
         });
         const dados = await resposta.json();
         if (resposta.ok && dados.sucesso) {
-            alert(dados.mensagem);
-            if (dados.redirecionar) window.location.href = new URL(dados.redirecionar, resposta.url).href;
+            mostrarMensagemAvaliacao(dados.mensagem, true);
+            if (dados.redirecionar) {
+                const destino = new URL(dados.redirecionar, resposta.url).href;
+                setTimeout(() => { window.location.href = destino; }, 1500);
+            }
         } else {
-            alert(dados.mensagem || "Não foi possível realizar a operação.");
+            mostrarMensagemAvaliacao(dados.mensagem || "Não foi possível realizar a operação.", false);
         }
     } catch (erro) {
-        alert(erro.message);
+        mostrarMensagemAvaliacao(erro.message, false);
     }
 }
 

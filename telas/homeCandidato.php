@@ -32,6 +32,7 @@ if(!isset($_SESSION['candidato'])){
         Sair
     </a>
 
+<p id="mensagem" role="status" aria-live="polite"></p>
 <script src="../scripts/candidato.js"></script>
 </body>
 </html>

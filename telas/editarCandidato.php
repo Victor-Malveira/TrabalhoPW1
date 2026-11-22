@@ -34,6 +34,7 @@ $candidato = $candidatoControlador->buscarPeloId($id);
         <br><br>
         <button type="button" onclick="editarCandidato()">Salvar alterações</button>
     </form>
+    <p id="mensagem" role="status" aria-live="polite"></p>
     <br>
     <a href="homeCandidato.php">Voltar</a>
 <script src="../scripts/candidato.js"></script>

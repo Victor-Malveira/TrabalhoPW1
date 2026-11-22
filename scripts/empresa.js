@@ -1,3 +1,10 @@
+function mostrarMensagemEmpresa(texto, sucesso) {
+    const mensagem = document.getElementById("mensagem");
+    if (!mensagem) return;
+    mensagem.textContent = texto;
+    mensagem.style.color = sucesso ? "green" : "red";
+}
+
 async function salvarEmpresa() {
     const nome = document.getElementById("nome")?.value ?? "";
     const email = document.getElementById("email")?.value ?? "";
@@ -12,13 +19,16 @@ async function salvarEmpresa() {
         });
         const dados = await resposta.json();
         if (resposta.ok && dados.sucesso) {
-            alert(dados.mensagem);
-            if (dados.redirecionar) window.location.href = new URL(dados.redirecionar, resposta.url).href;
+            mostrarMensagemEmpresa(dados.mensagem, true);
+            if (dados.redirecionar) {
+                const destino = new URL(dados.redirecionar, resposta.url).href;
+                setTimeout(() => { window.location.href = destino; }, 1500);
+            }
         } else {
-            alert(dados.mensagem || "Não foi possível realizar a operação.");
+            mostrarMensagemEmpresa(dados.mensagem || "Não foi possível realizar a operação.", false);
         }
     } catch (erro) {
-        alert(erro.message);
+        mostrarMensagemEmpresa(erro.message, false);
     }
 }
 
@@ -34,13 +44,16 @@ async function autenticar() {
         });
         const dados = await resposta.json();
         if (resposta.ok && dados.sucesso) {
-            alert(dados.mensagem);
-            if (dados.redirecionar) window.location.href = new URL(dados.redirecionar, resposta.url).href;
+            mostrarMensagemEmpresa(dados.mensagem, true);
+            if (dados.redirecionar) {
+                const destino = new URL(dados.redirecionar, resposta.url).href;
+                setTimeout(() => { window.location.href = destino; }, 1500);
+            }
         } else {
-            alert(dados.mensagem || "Não foi possível realizar a operação.");
+            mostrarMensagemEmpresa(dados.mensagem || "Não foi possível realizar a operação.", false);
         }
     } catch (erro) {
-        alert(erro.message);
+        mostrarMensagemEmpresa(erro.message, false);
     }
 }
 
@@ -58,13 +71,16 @@ async function editarEmpresa() {
         });
         const dados = await resposta.json();
         if (resposta.ok && dados.sucesso) {
-            alert(dados.mensagem);
-            if (dados.redirecionar) window.location.href = new URL(dados.redirecionar, resposta.url).href;
+            mostrarMensagemEmpresa(dados.mensagem, true);
+            if (dados.redirecionar) {
+                const destino = new URL(dados.redirecionar, resposta.url).href;
+                setTimeout(() => { window.location.href = destino; }, 1500);
+            }
         } else {
-            alert(dados.mensagem || "Não foi possível realizar a operação.");
+            mostrarMensagemEmpresa(dados.mensagem || "Não foi possível realizar a operação.", false);
         }
     } catch (erro) {
-        alert(erro.message);
+        mostrarMensagemEmpresa(erro.message, false);
     }
 }
 
@@ -79,13 +95,16 @@ async function excluirEmpresa() {
         });
         const dados = await resposta.json();
         if (resposta.ok && dados.sucesso) {
-            alert(dados.mensagem);
-            if (dados.redirecionar) window.location.href = new URL(dados.redirecionar, resposta.url).href;
+            mostrarMensagemEmpresa(dados.mensagem, true);
+            if (dados.redirecionar) {
+                const destino = new URL(dados.redirecionar, resposta.url).href;
+                setTimeout(() => { window.location.href = destino; }, 1500);
+            }
         } else {
-            alert(dados.mensagem || "Não foi possível realizar a operação.");
+            mostrarMensagemEmpresa(dados.mensagem || "Não foi possível realizar a operação.", false);
         }
     } catch (erro) {
-        alert(erro.message);
+        mostrarMensagemEmpresa(erro.message, false);
     }
 }
 
@@ -99,13 +118,16 @@ async function sairEmpresa() {
         });
         const dados = await resposta.json();
         if (resposta.ok && dados.sucesso) {
-            alert(dados.mensagem);
-            if (dados.redirecionar) window.location.href = new URL(dados.redirecionar, resposta.url).href;
+            mostrarMensagemEmpresa(dados.mensagem, true);
+            if (dados.redirecionar) {
+                const destino = new URL(dados.redirecionar, resposta.url).href;
+                setTimeout(() => { window.location.href = destino; }, 1500);
+            }
         } else {
-            alert(dados.mensagem || "Não foi possível realizar a operação.");
+            mostrarMensagemEmpresa(dados.mensagem || "Não foi possível realizar a operação.", false);
         }
     } catch (erro) {
-        alert(erro.message);
+        mostrarMensagemEmpresa(erro.message, false);
     }
 }
 
@@ -122,6 +144,7 @@ async function buscarEmpresa() {
         const dados = await resposta.json();
         if(!resposta.ok || !dados.sucesso) throw new Error(dados.mensagem || "Erro na busca");
         mensagem.textContent = dados.empresas.length ? "" : "Nenhuma empresa encontrada.";
+        mensagem.style.color = "black";
         for(const empresa of dados.empresas) {
             const div=document.createElement("div"), h=document.createElement("h2");
             h.textContent=empresa.nome; div.appendChild(h);
@@ -147,7 +170,13 @@ async function buscarEmpresa() {
                 comentario.name="comentario";comentario.placeholder="Comentário";form.appendChild(comentario);
                 const botao=document.createElement("button");
                 botao.type="button";botao.textContent="Enviar avaliação";botao.onclick=()=>salvarAvaliacao(form);
-                form.appendChild(botao);div.appendChild(form);
+                form.appendChild(botao);
+                const mensagemAvaliacao=document.createElement("p");
+                mensagemAvaliacao.className="mensagem-avaliacao";
+                mensagemAvaliacao.setAttribute("role","status");
+                mensagemAvaliacao.setAttribute("aria-live","polite");
+                form.appendChild(mensagemAvaliacao);
+                div.appendChild(form);
             }else{
                 const aviso=document.createElement("p"), login=document.createElement("a");
                 login.href="autenticarCandidato.php";login.textContent="Faça login para avaliar";
@@ -155,5 +184,5 @@ async function buscarEmpresa() {
             }
             div.appendChild(document.createElement("hr"));resultados.appendChild(div);
         }
-    }catch(erro){mensagem.textContent=erro.message;}
+    }catch(erro){mensagem.textContent=erro.message; mensagem.style.color="red";}
 }

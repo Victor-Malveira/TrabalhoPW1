@@ -28,6 +28,7 @@ $empresa = $empresaControlador->buscarPeloId($id);
             Salvar alterações
         </button>
     </form>
+    <p id="mensagem" role="status" aria-live="polite"></p>
     <br>
     <a href="gestao.php">Voltar</a>
 

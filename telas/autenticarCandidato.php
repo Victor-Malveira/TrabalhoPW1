@@ -15,6 +15,7 @@
         <br><br>
         <button type="button" onclick="autenticarCandidato()">Entrar</button>
     </form>
+    <p id="mensagem" role="status" aria-live="polite"></p>
 
     <br>
     <a href="cadastrarCandidato.php">Criar uma conta</a><br>

@@ -1,3 +1,10 @@
+function mostrarMensagemCandidato(texto, sucesso) {
+    const mensagem = document.getElementById("mensagem");
+    if (!mensagem) return;
+    mensagem.textContent = texto;
+    mensagem.style.color = sucesso ? "green" : "red";
+}
+
 async function salvarCandidato() {
     const nome = document.getElementById("nome")?.value ?? "";
     const email = document.getElementById("email")?.value ?? "";
@@ -13,13 +20,16 @@ async function salvarCandidato() {
         });
         const dados = await resposta.json();
         if (resposta.ok && dados.sucesso) {
-            alert(dados.mensagem);
-            if (dados.redirecionar) window.location.href = new URL(dados.redirecionar, resposta.url).href;
+            mostrarMensagemCandidato(dados.mensagem, true);
+            if (dados.redirecionar) {
+                const destino = new URL(dados.redirecionar, resposta.url).href;
+                setTimeout(() => { window.location.href = destino; }, 1500);
+            }
         } else {
-            alert(dados.mensagem || "Não foi possível realizar a operação.");
+            mostrarMensagemCandidato(dados.mensagem || "Não foi possível realizar a operação.", false);
         }
     } catch (erro) {
-        alert(erro.message);
+        mostrarMensagemCandidato(erro.message, false);
     }
 }
 
@@ -35,13 +45,16 @@ async function autenticarCandidato() {
         });
         const dados = await resposta.json();
         if (resposta.ok && dados.sucesso) {
-            alert(dados.mensagem);
-            if (dados.redirecionar) window.location.href = new URL(dados.redirecionar, resposta.url).href;
+            mostrarMensagemCandidato(dados.mensagem, true);
+            if (dados.redirecionar) {
+                const destino = new URL(dados.redirecionar, resposta.url).href;
+                setTimeout(() => { window.location.href = destino; }, 1500);
+            }
         } else {
-            alert(dados.mensagem || "Não foi possível realizar a operação.");
+            mostrarMensagemCandidato(dados.mensagem || "Não foi possível realizar a operação.", false);
         }
     } catch (erro) {
-        alert(erro.message);
+        mostrarMensagemCandidato(erro.message, false);
     }
 }
 
@@ -60,13 +73,16 @@ async function editarCandidato() {
         });
         const dados = await resposta.json();
         if (resposta.ok && dados.sucesso) {
-            alert(dados.mensagem);
-            if (dados.redirecionar) window.location.href = new URL(dados.redirecionar, resposta.url).href;
+            mostrarMensagemCandidato(dados.mensagem, true);
+            if (dados.redirecionar) {
+                const destino = new URL(dados.redirecionar, resposta.url).href;
+                setTimeout(() => { window.location.href = destino; }, 1500);
+            }
         } else {
-            alert(dados.mensagem || "Não foi possível realizar a operação.");
+            mostrarMensagemCandidato(dados.mensagem || "Não foi possível realizar a operação.", false);
         }
     } catch (erro) {
-        alert(erro.message);
+        mostrarMensagemCandidato(erro.message, false);
     }
 }
 
@@ -81,13 +97,16 @@ async function excluirCandidato() {
         });
         const dados = await resposta.json();
         if (resposta.ok && dados.sucesso) {
-            alert(dados.mensagem);
-            if (dados.redirecionar) window.location.href = new URL(dados.redirecionar, resposta.url).href;
+            mostrarMensagemCandidato(dados.mensagem, true);
+            if (dados.redirecionar) {
+                const destino = new URL(dados.redirecionar, resposta.url).href;
+                setTimeout(() => { window.location.href = destino; }, 1500);
+            }
         } else {
-            alert(dados.mensagem || "Não foi possível realizar a operação.");
+            mostrarMensagemCandidato(dados.mensagem || "Não foi possível realizar a operação.", false);
         }
     } catch (erro) {
-        alert(erro.message);
+        mostrarMensagemCandidato(erro.message, false);
     }
 }
 
@@ -101,13 +120,16 @@ async function sairCandidato() {
         });
         const dados = await resposta.json();
         if (resposta.ok && dados.sucesso) {
-            alert(dados.mensagem);
-            if (dados.redirecionar) window.location.href = new URL(dados.redirecionar, resposta.url).href;
+            mostrarMensagemCandidato(dados.mensagem, true);
+            if (dados.redirecionar) {
+                const destino = new URL(dados.redirecionar, resposta.url).href;
+                setTimeout(() => { window.location.href = destino; }, 1500);
+            }
         } else {
-            alert(dados.mensagem || "Não foi possível realizar a operação.");
+            mostrarMensagemCandidato(dados.mensagem || "Não foi possível realizar a operação.", false);
         }
     } catch (erro) {
-        alert(erro.message);
+        mostrarMensagemCandidato(erro.message, false);
     }
 }
 
@@ -120,6 +142,6 @@ async function buscarCandidato() {
         });
         const dados=await resposta.json();
         if(resposta.ok && dados.sucesso)return dados.candidatos;
-        alert(dados.mensagem);
-    }catch(erro){alert(erro.message);}
+        mostrarMensagemCandidato(dados.mensagem, false);
+    }catch(erro){mostrarMensagemCandidato(erro.message, false);}
 }

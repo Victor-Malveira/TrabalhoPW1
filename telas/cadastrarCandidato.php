@@ -28,6 +28,7 @@
         <br><br>
         <button type="button" onclick="salvarCandidato()">Cadastrar</button>
     </form>
+    <p id="mensagem" role="status" aria-live="polite"></p>
 
     <br>
     <a href="autenticarCandidato.php">Já tenho uma conta</a><br>
