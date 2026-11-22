@@ -14,15 +14,15 @@ $empresa = $empresaControlador->buscarPeloId($id);
 <body>
     <h1>Editar Empresa</h1>
     <form>
-        <input type="hidden" name="id" value="<?= $empresa- id="id">getId(); ?>">
+        <input type="hidden" name="id" id="id" value="<?= $empresa->getId(); ?>">
         <label>Nome:</label>
-        <input type="text" name="nome" value="<?= $empresa- id="nome">getNome(); ?>">
+        <input type="text" name="nome" id="nome" value="<?= $empresa->getNome(); ?>">
         <br><br>
         <label>E-mail:</label>
-        <input type="text" name="email" value="<?= $empresa- id="email">getEmail(); ?>">
+        <input type="text" name="email" id="email" value="<?= $empresa->getEmail(); ?>">
         <br><br>
         <label>Telefone:</label>
-        <input type="text" name="telefone" value="<?= $empresa- id="telefone">getTelefone(); ?>">
+        <input type="text" name="telefone" id="telefone" value="<?= $empresa->getTelefone(); ?>">
         <br><br>
         <button type="button" onclick="editarEmpresa()">
             Salvar alterações
