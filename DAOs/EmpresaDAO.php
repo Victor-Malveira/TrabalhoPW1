@@ -26,7 +26,6 @@
             $stmt->bindValue(1,$empresa->getEmail());
             $stmt->execute();
             $empresaBase = $stmt->fetch(PDO::FETCH_OBJ);
-            var_dump($empresaBase);
             if($empresaBase){
                 //converter esse objeto para o modelo
                 $empresaModelo = new Empresa();
