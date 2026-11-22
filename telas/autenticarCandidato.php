@@ -7,21 +7,13 @@
     <title>Login Candidato</title>
 </head>
 <body>
-
     <h1>Login do Candidato</h1>
-
     <form>
-
-        Email:
-        <input type="email" name="email" required id="email">
+        Email:<input type="email" name="email" required id="email">
         <br><br>
-
-        Senha:
-        <input type="password" name="senha" required id="senha">
+        Senha:<input type="password" name="senha" required id="senha">
         <br><br>
-
         <button type="button" onclick="autenticarCandidato()">Entrar</button>
-
     </form>
 
     <br>

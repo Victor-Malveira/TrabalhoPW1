@@ -14,25 +14,15 @@ $candidato = $candidatoControlador->buscarPeloId($id);
     <title>Editar Candidato</title>
 </head>
 <body>
-
     <h1>Editar Candidato</h1>
-
     <form>
-
         <input type="hidden" name="id" value="<?= $candidato- id="id">getId(); ?>">
-
-        Nome:
-        <input type="text" name="nome" value="<?= $candidato- id="nome">getNome(); ?>">
+        Nome:<input type="text" name="nome" value="<?= $candidato- id="nome">getNome(); ?>">
         <br><br>
-
-        Email:
-        <input type="email" name="email" value="<?= $candidato- id="email">getEmail(); ?>">
+        Email:<input type="email" name="email" value="<?= $candidato- id="email">getEmail(); ?>">
         <br><br>
-
-        Telefone:
-        <input type="text" name="telefone" value="<?= $candidato- id="telefone">getTelefone(); ?>">
+        Telefone:<input type="text" name="telefone" value="<?= $candidato- id="telefone">getTelefone(); ?>">
         <br><br>
-
         Formato do currículo:
         <select name="formatoCurriculo" id="formatoCurriculo">
             <option value="Texto" <?= $candidato->getFormatoCurriculo() == "Texto" ? "selected" : ""; ?>>Texto</option>
@@ -41,16 +31,11 @@ $candidato = $candidatoControlador->buscarPeloId($id);
 
             <option value="Audio" <?= $candidato->getFormatoCurriculo() == "Audio" ? "selected" : ""; ?>>Áudio</option>
         </select>
-
         <br><br>
-
         <button type="button" onclick="editarCandidato()">Salvar alterações</button>
-
     </form>
-
     <br>
     <a href="homeCandidato.php">Voltar</a>
-
 <script src="../scripts/candidato.js"></script>
 </body>
 </html>
