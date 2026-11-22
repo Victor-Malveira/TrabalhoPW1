@@ -1,4 +1,6 @@
-<?php require_once __DIR__ . '/../DTOs/EmpresaDTO.php';
+<?php
+
+require_once __DIR__ . '/../DTOs/EmpresaDTO.php';
 require_once __DIR__ . '/../DTOs/CandidatoDTO.php';
 require_once __DIR__ . '/../DTOs/AvaliacaoDTO.php';
 require_once __DIR__ . '/EmpresaControlador.php';
@@ -8,7 +10,8 @@ header('Content-Type: application/json; charset=utf-8');
 $acao = $_GET['acao'] ?? '';
 $dados = json_decode(file_get_contents('php://input'));
 switch ($acao) {
-    case "salvarEmpresa": if (trim($dados->nome ?? '') === '' || trim($dados->email ?? '') === '' ||     trim($dados->senha ?? '') === '' || trim($dados->telefone ?? '') === '') {
+    case "salvarEmpresa":
+        if (trim($dados->nome ?? '') === '' || trim($dados->email ?? '') === '' ||     trim($dados->senha ?? '') === '' || trim($dados->telefone ?? '') === '') {
             http_response_code(400);
             echo json_encode(['sucesso'=>false, 'mensagem'=>'Preencha nome, e-mail, senha e telefone.'], JSON_UNESCAPED_UNICODE);
             break;
@@ -22,13 +25,13 @@ switch ($acao) {
             (new EmpresaControlador())->salvar($dto);
             http_response_code(201);
             echo json_encode(['sucesso'=>true,'mensagem'=>'Operação realizada com sucesso','redirecionar'=>'../index.html'], JSON_UNESCAPED_UNICODE);
-        }
-        catch (Throwable $erro) {
+        } catch (Throwable $erro) {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
         }
         break;
-    case "autenticar": if (trim($dados->email ?? '') === '' || trim($dados->senha ?? '') === '') {
+    case "autenticar":
+        if (trim($dados->email ?? '') === '' || trim($dados->senha ?? '') === '') {
             http_response_code(400);
             echo json_encode(['sucesso'=>false, 'mensagem'=>'Preencha e-mail e senha.'], JSON_UNESCAPED_UNICODE);
             break;
@@ -42,13 +45,13 @@ switch ($acao) {
             $_SESSION['empresa']=$entidade;
             http_response_code(200);
             echo json_encode(['sucesso'=>true,'mensagem'=>'Login realizado com sucesso','redirecionar'=>'../telas/home.php'], JSON_UNESCAPED_UNICODE);
-        }
-        catch (Throwable $erro) {
+        } catch (Throwable $erro) {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
         }
         break;
-    case "editarEmpresa": $dto = new EmpresaDTO();
+    case "editarEmpresa":
+        $dto = new EmpresaDTO();
         $dto->id = $dados->id ?? 0;
         $dto->nome = $dados->nome ?? '';
         $dto->email = $dados->email ?? '';
@@ -57,30 +60,31 @@ switch ($acao) {
             (new EmpresaControlador())->editar($dto);
             http_response_code(200);
             echo json_encode(['sucesso'=>true,'mensagem'=>'Operação realizada com sucesso','redirecionar'=>'../telas/busca.php'], JSON_UNESCAPED_UNICODE);
-        }
-        catch (Throwable $erro) {
+        } catch (Throwable $erro) {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
         }
         break;
-    case "excluirEmpresa": $dto = new EmpresaDTO();
+    case "excluirEmpresa":
+        $dto = new EmpresaDTO();
         $dto->id = $dados->id ?? 0;
         try {
             (new EmpresaControlador())->excluir($dto->id);
             http_response_code(200);
             echo json_encode(['sucesso'=>true,'mensagem'=>'Exclusão realizada com sucesso','redirecionar'=>'../index.html'], JSON_UNESCAPED_UNICODE);
-        }
-        catch (Throwable $erro) {
+        } catch (Throwable $erro) {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
         }
         break;
-    case "sairEmpresa": session_start();
+    case "sairEmpresa":
+        session_start();
         unset($_SESSION['empresa']);
         http_response_code(200);
         echo json_encode(['sucesso'=>true,'mensagem'=>'Sessão encerrada','redirecionar'=>'../telas/autenticar.html'], JSON_UNESCAPED_UNICODE);
         break;
-    case "salvarCandidato": if (trim($dados->nome ?? '') === '' || trim($dados->email ?? '') === '' || trim($dados->senha ?? '') === '') {
+    case "salvarCandidato":
+        if (trim($dados->nome ?? '') === '' || trim($dados->email ?? '') === '' || trim($dados->senha ?? '') === '') {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>'Preencha nome, e-mail e senha.'], JSON_UNESCAPED_UNICODE);
             break;
@@ -100,13 +104,13 @@ switch ($acao) {
             (new CandidatoControlador())->salvar($dto);
             http_response_code(201);
             echo json_encode(['sucesso'=>true,'mensagem'=>'Operação realizada com sucesso','redirecionar'=>'../index.html'], JSON_UNESCAPED_UNICODE);
-        }
-        catch (Throwable $erro) {
+        } catch (Throwable $erro) {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
         }
         break;
-    case "autenticarCandidato": if (trim($dados->email ?? '') === '' || trim($dados->senha ?? '') === '') {
+    case "autenticarCandidato":
+        if (trim($dados->email ?? '') === '' || trim($dados->senha ?? '') === '') {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>'Preencha e-mail e senha.'], JSON_UNESCAPED_UNICODE);
             break;
@@ -125,13 +129,13 @@ switch ($acao) {
             $_SESSION['candidato']=$entidade;
             http_response_code(200);
             echo json_encode(['sucesso'=>true,'mensagem'=>'Login realizado com sucesso','redirecionar'=>'../telas/homeCandidato.php'], JSON_UNESCAPED_UNICODE);
-        }
-        catch (Throwable $erro) {
+        } catch (Throwable $erro) {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
         }
         break;
-    case "editarCandidato": $dto = new CandidatoDTO();
+    case "editarCandidato":
+        $dto = new CandidatoDTO();
         $dto->id = $dados->id ?? 0;
         $dto->nome = $dados->nome ?? '';
         $dto->email = $dados->email ?? '';
@@ -148,30 +152,31 @@ switch ($acao) {
             }
             http_response_code(200);
             echo json_encode(['sucesso'=>true,'mensagem'=>'Operação realizada com sucesso','redirecionar'=>'../telas/homeCandidato.php'], JSON_UNESCAPED_UNICODE);
-        }
-        catch (Throwable $erro) {
+        } catch (Throwable $erro) {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
         }
         break;
-    case "excluirCandidato": $dto = new CandidatoDTO();
+    case "excluirCandidato":
+        $dto = new CandidatoDTO();
         $dto->id = $dados->id ?? 0;
         try {
             (new CandidatoControlador())->excluir($dto->id);
             http_response_code(200);
             echo json_encode(['sucesso'=>true,'mensagem'=>'Exclusão realizada com sucesso','redirecionar'=>'../index.html'], JSON_UNESCAPED_UNICODE);
-        }
-        catch (Throwable $erro) {
+        } catch (Throwable $erro) {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
         }
         break;
-    case "sairCandidato": session_start();
+    case "sairCandidato":
+        session_start();
         unset($_SESSION['candidato']);
         http_response_code(200);
         echo json_encode(['sucesso'=>true,'mensagem'=>'Sessão encerrada','redirecionar'=>'../telas/autenticarCandidato.php'], JSON_UNESCAPED_UNICODE);
         break;
-    case "salvarAvaliacao": session_start();
+    case "salvarAvaliacao":
+        session_start();
         if(!isset($_SESSION['candidato'])) {
             http_response_code(401);
             echo json_encode(['sucesso'=>false,'mensagem'=>'Faça login como candidato.']);
@@ -191,13 +196,13 @@ switch ($acao) {
             (new AvaliacaoControlador())->salvar($dto);
             http_response_code(201);
             echo json_encode(['sucesso'=>true,'mensagem'=>'Operação realizada com sucesso','redirecionar'=>'../telas/homeCandidato.php'], JSON_UNESCAPED_UNICODE);
-        }
-        catch (Throwable $erro) {
+        } catch (Throwable $erro) {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
         }
         break;
-    case "editarAvaliacao": $dto = new AvaliacaoDTO();
+    case "editarAvaliacao":
+        $dto = new AvaliacaoDTO();
         $dto->id = $dados->id ?? 0;
         $dto->nota = $dados->nota ?? 0;
         $dto->comentario = $dados->comentario ?? '';
@@ -209,63 +214,63 @@ switch ($acao) {
             (new AvaliacaoControlador())->editar($dto);
             http_response_code(200);
             echo json_encode(['sucesso'=>true,'mensagem'=>'Operação realizada com sucesso','redirecionar'=>'../telas/homeCandidato.php'], JSON_UNESCAPED_UNICODE);
-        }
-        catch (Throwable $erro) {
+        } catch (Throwable $erro) {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
         }
         break;
-    case "excluirAvaliacao": $dto = new AvaliacaoDTO();
+    case "excluirAvaliacao":
+        $dto = new AvaliacaoDTO();
         $dto->id = $dados->id ?? 0;
         try {
             (new AvaliacaoControlador())->excluir($dto->id);
             http_response_code(200);
             echo json_encode(['sucesso'=>true,'mensagem'=>'Exclusão realizada com sucesso','redirecionar'=>'../index.html'], JSON_UNESCAPED_UNICODE);
-        }
-        catch (Throwable $erro) {
+        } catch (Throwable $erro) {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
         }
         break;
-    case "buscarEmpresa": try {
+    case "buscarEmpresa":
+        try {
             $objetos=(new EmpresaControlador())->buscar($dados->pesquisa ?? '');
             $lista=[];
             foreach($objetos as $obj) {
                 $lista[]=['id'=>$obj->getId(),'nome'=>$obj->getNome(),'email'=>$obj->getEmail(),'telefone'=>$obj->getTelefone()];
             }
             echo json_encode(['sucesso'=>true,'empresas'=>$lista],JSON_UNESCAPED_UNICODE);
-        }
-        catch (Throwable $erro) {
+        } catch (Throwable $erro) {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
         }
         break;
-    case "buscarCandidato": try {
+    case "buscarCandidato":
+        try {
             $objetos=(new CandidatoControlador())->buscar($dados->pesquisa ?? '');
             $lista=[];
             foreach($objetos as $obj) {
                 $lista[]=['id'=>$obj->getId(),'nome'=>$obj->getNome(),'email'=>$obj->getEmail(),'telefone'=>$obj->getTelefone(),'formatoCurriculo'=>$obj->getFormatoCurriculo()];
             }
             echo json_encode(['sucesso'=>true,'candidatos'=>$lista],JSON_UNESCAPED_UNICODE);
-        }
-        catch (Throwable $erro) {
+        } catch (Throwable $erro) {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
         }
         break;
-    case "buscarAvaliacoes": try {
+    case "buscarAvaliacoes":
+        try {
             $objetos=(new AvaliacaoControlador())->buscarPorEmpresa($dados->empresaId ?? 0);
             $lista=[];
             foreach($objetos as $obj) {
                 $lista[]=['id'=>$obj->getId(),'nota'=>$obj->getNota(),'comentario'=>$obj->getComentario(),'possuiRampa'=>$obj->getPossuiRampa(),'possuiBanheiroAdaptado'=>$obj->getPossuiBanheiroAdaptado(),'possuiSinalizacaoBraile'=>$obj->getPossuiSinalizacaoBraile(),'possuiAcessibilidadeDigital'=>$obj->getPossuiAcessibilidadeDigital(),'dataAvaliacao'=>$obj->getDataAvaliacao()];
             }
             echo json_encode(['sucesso'=>true,'avaliacoes'=>$lista],JSON_UNESCAPED_UNICODE);
-        }
-        catch (Throwable $erro) {
+        } catch (Throwable $erro) {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
         }
         break;
-    default: http_response_code(404);
+    default:
+        http_response_code(404);
         echo json_encode(['sucesso'=>false,'mensagem'=>'Ação desconhecida']);
 }
