@@ -1,0 +1,964 @@
+{
+  "info": {
+    "name": "TrabalhoPW1 - Testes JSON",
+    "description": "Coleção Postman v2.1 baseada nas ações reais de controladores/rota.php. Configure baseUrl (pasta local no XAMPP), emails, senhas e IDs de registros de teste. As requisições de cadastro podem falhar por email já existente. Testes negativos são esperados como erros. POST com JSON em todas as rotas.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost/TrabalhoPW1-main/controladores/rota.php"
+    },
+    {
+      "key": "empresaEmail",
+      "value": ""
+    },
+    {
+      "key": "empresaSenha",
+      "value": ""
+    },
+    {
+      "key": "empresaId",
+      "value": ""
+    },
+    {
+      "key": "candidatoEmail",
+      "value": ""
+    },
+    {
+      "key": "candidatoSenha",
+      "value": ""
+    },
+    {
+      "key": "candidatoId",
+      "value": ""
+    },
+    {
+      "key": "avaliacaoId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "01 - Empresa",
+      "item": [
+        {
+          "name": "Cadastro de empresa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=salvarEmpresa",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "salvarEmpresa"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Empresa Teste Postman\",\n  \"email\": \"{{empresaEmail}}\",\n  \"senha\": \"{{empresaSenha}}\",\n  \"telefone\": \"68999990000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Autenticar empresa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=autenticar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "autenticar"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{empresaEmail}}\",\n  \"senha\": \"{{empresaSenha}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Buscar empresa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=buscarEmpresa",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "buscarEmpresa"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pesquisa\": \"Empresa Teste\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });",
+                  "pm.test(\"Lista empresas retornada\", function () { pm.expect(pm.response.json().empresas).to.be.an(\"array\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Editar empresa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=editarEmpresa",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "editarEmpresa"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{empresaId}}\",\n  \"nome\": \"Empresa Teste Atualizada\",\n  \"email\": \"{{empresaEmail}}\",\n  \"telefone\": \"68999998888\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sair da empresa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=sairEmpresa",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "sairEmpresa"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02 - Candidato",
+      "item": [
+        {
+          "name": "Cadastro de candidato",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=salvarCandidato",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "salvarCandidato"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Candidato Teste Postman\",\n  \"email\": \"{{candidatoEmail}}\",\n  \"senha\": \"{{candidatoSenha}}\",\n  \"telefone\": \"68999997777\",\n  \"formatoCurriculo\": \"Texto\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Autenticar candidato",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=autenticarCandidato",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "autenticarCandidato"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{candidatoEmail}}\",\n  \"senha\": \"{{candidatoSenha}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Buscar candidato",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=buscarCandidato",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "buscarCandidato"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pesquisa\": \"Candidato Teste\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });",
+                  "pm.test(\"Lista candidatos retornada\", function () { pm.expect(pm.response.json().candidatos).to.be.an(\"array\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Editar candidato",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=editarCandidato",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "editarCandidato"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{candidatoId}}\",\n  \"nome\": \"Candidato Teste Atualizado\",\n  \"email\": \"{{candidatoEmail}}\",\n  \"telefone\": \"68999996666\",\n  \"formatoCurriculo\": \"Libras\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03 - Avaliação (requer login do candidato)",
+      "item": [
+        {
+          "name": "Salvar avaliação",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=salvarAvaliacao",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "salvarAvaliacao"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"empresaId\": \"{{empresaId}}\",\n  \"nota\": 5,\n  \"comentario\": \"Teste de acessibilidade via Postman\",\n  \"possuiRampa\": 1,\n  \"possuiBanheiroAdaptado\": 1,\n  \"possuiSinalizacaoBraile\": 0,\n  \"possuiAcessibilidadeDigital\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Requer sessão de candidato autenticado no mesmo cookie jar. Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar avaliações",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=buscarAvaliacoes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "buscarAvaliacoes"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"empresaId\": \"{{empresaId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });",
+                  "pm.test(\"Lista avaliacoes retornada\", function () { pm.expect(pm.response.json().avaliacoes).to.be.an(\"array\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Editar avaliação",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=editarAvaliacao",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "editarAvaliacao"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{avaliacaoId}}\",\n  \"nota\": 4,\n  \"comentario\": \"Comentário atualizado pelo Postman\",\n  \"possuiRampa\": 1,\n  \"possuiBanheiroAdaptado\": 0,\n  \"possuiSinalizacaoBraile\": 0,\n  \"possuiAcessibilidadeDigital\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sair do candidato",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=sairCandidato",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "sairCandidato"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04 - Testes negativos",
+      "item": [
+        {
+          "name": "Login empresa com senha incorreta",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=autenticar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "autenticar"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{empresaEmail}}\",\n  \"senha\": \"senha-incorreta\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", function () { pm.response.to.have.status(400); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = false\", function () { pm.expect(pm.response.json().sucesso).to.eql(false); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Criar avaliação sem login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=salvarAvaliacao",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "salvarAvaliacao"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"empresaId\": \"{{empresaId}}\",\n  \"nota\": 3,\n  \"comentario\": \"Deve falhar\",\n  \"possuiRampa\": 1,\n  \"possuiBanheiroAdaptado\": 0,\n  \"possuiSinalizacaoBraile\": 0,\n  \"possuiAcessibilidadeDigital\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Requer sessão de candidato autenticado no mesmo cookie jar. Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401\", function () { pm.response.to.have.status(401); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = false\", function () { pm.expect(pm.response.json().sucesso).to.eql(false); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ação inexistente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=acaoInexistente",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "acaoInexistente"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", function () { pm.response.to.have.status(404); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = false\", function () { pm.expect(pm.response.json().sucesso).to.eql(false); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05 - Exclusões (somente após validar os demais testes)",
+      "item": [
+        {
+          "name": "Excluir avaliação",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=excluirAvaliacao",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "excluirAvaliacao"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{avaliacaoId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "ATENÇÃO: exclui dados. Execute apenas com IDs de teste. Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Excluir candidato",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=excluirCandidato",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "excluirCandidato"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{candidatoId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "ATENÇÃO: exclui dados. Execute apenas com IDs de teste. Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Excluir empresa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}?acao=excluirEmpresa",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "acao",
+                  "value": "excluirEmpresa"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{empresaId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "ATENÇÃO: exclui dados. Execute apenas com IDs de teste. Substitua as variáveis da coleção pelos dados reais do banco de teste."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
+                  "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
