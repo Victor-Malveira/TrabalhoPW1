@@ -52,6 +52,16 @@ case "sairEmpresa":
 session_start(); unset($_SESSION['empresa']); http_response_code(200); echo json_encode(['sucesso'=>true,'mensagem'=>'Sessão encerrada','redirecionar'=>'../telas/autenticar.html'], JSON_UNESCAPED_UNICODE);
 break;
 case "salvarCandidato":
+if (trim($dados->nome ?? '') === '' || trim($dados->email ?? '') === '' || trim($dados->senha ?? '') === '') {
+    http_response_code(400);
+    echo json_encode(['sucesso'=>false,'mensagem'=>'Preencha nome, e-mail e senha.'], JSON_UNESCAPED_UNICODE);
+    break;
+}
+if (!filter_var($dados->email, FILTER_VALIDATE_EMAIL)) {
+    http_response_code(400);
+    echo json_encode(['sucesso'=>false,'mensagem'=>'Informe um e-mail válido.'], JSON_UNESCAPED_UNICODE);
+    break;
+}
 $dto = new CandidatoDTO();
 $dto->nome = $dados->nome ?? '';
 $dto->email = $dados->email ?? '';
@@ -64,6 +74,16 @@ http_response_code(201); echo json_encode(['sucesso'=>true,'mensagem'=>'Operaç�
 } catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
 break;
 case "autenticarCandidato":
+if (trim($dados->email ?? '') === '' || trim($dados->senha ?? '') === '') {
+    http_response_code(400);
+    echo json_encode(['sucesso'=>false,'mensagem'=>'Preencha e-mail e senha.'], JSON_UNESCAPED_UNICODE);
+    break;
+}
+if (!filter_var($dados->email, FILTER_VALIDATE_EMAIL)) {
+    http_response_code(400);
+    echo json_encode(['sucesso'=>false,'mensagem'=>'Informe um e-mail válido.'], JSON_UNESCAPED_UNICODE);
+    break;
+}
 $dto = new CandidatoDTO();
 $dto->email = $dados->email ?? '';
 $dto->senha = $dados->senha ?? '';

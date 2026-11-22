@@ -11,6 +11,14 @@ async function salvarCandidato() {
     const senha = document.getElementById("senha")?.value ?? "";
     const telefone = document.getElementById("telefone")?.value ?? "";
     const formatoCurriculo = document.getElementById("formatoCurriculo")?.value ?? "";
+    if (!nome.trim() || !email.trim() || !senha.trim()) {
+        mostrarMensagemCandidato("Preencha nome, e-mail e senha.", false);
+        return;
+    }
+    if (!document.getElementById("email").checkValidity()) {
+        mostrarMensagemCandidato("Informe um e-mail válido.", false);
+        return;
+    }
     const candidato = { nome, email, senha, telefone, formatoCurriculo };
     try {
         const resposta = await fetch("../controladores/rota.php?acao=salvarCandidato", {
@@ -36,6 +44,14 @@ async function salvarCandidato() {
 async function autenticarCandidato() {
     const email = document.getElementById("email")?.value ?? "";
     const senha = document.getElementById("senha")?.value ?? "";
+    if (!email.trim() || !senha.trim()) {
+        mostrarMensagemCandidato("Preencha e-mail e senha.", false);
+        return;
+    }
+    if (!document.getElementById("email").checkValidity()) {
+        mostrarMensagemCandidato("Informe um e-mail válido.", false);
+        return;
+    }
     const candidato = { email, senha };
     try {
         const resposta = await fetch("../controladores/rota.php?acao=autenticarCandidato", {
