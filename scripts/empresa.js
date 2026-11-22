@@ -1,5 +1,3 @@
-// Funções do modelo empresa, seguindo o padrão simples do agenda.
-
 async function salvarEmpresa() {
     const nome = document.getElementById("nome")?.value ?? "";
     const email = document.getElementById("email")?.value ?? "";
