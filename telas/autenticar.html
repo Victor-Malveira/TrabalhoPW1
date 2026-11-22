@@ -6,10 +6,11 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="../controladores/rota.php?acao=autenticar" method="POST">
-        Email:<input type="text" name="email">
-        Senha:<input type="password" name="senha">
-        <button>Autenticar</button>
+    <form>
+        Email:<input type="text" name="email" id="email">
+        Senha:<input type="password" name="senha" id="senha">
+        <button type="button" onclick="autenticar()">Autenticar</button>
     </form>    
+<script src="../scripts/empresa.js"></script>
 </body>
 </html>

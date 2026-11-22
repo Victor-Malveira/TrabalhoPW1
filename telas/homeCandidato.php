@@ -28,9 +28,10 @@ if(!isset($_SESSION['candidato'])){
     </a>
     <br><br>
 
-    <a href="../controladores/rota.php?acao=sairCandidato">
+    <a href="#" onclick="sairCandidato(); return false;">
         Sair
     </a>
 
+<script src="../scripts/candidato.js"></script>
 </body>
 </html>

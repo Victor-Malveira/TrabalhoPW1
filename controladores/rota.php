@@ -1,247 +1,158 @@
 <?php
-    require_once "../DTOs/CandidatoDTO.php";
-    require_once "../DTOs/AvaliacaoDTO.php";
-    require_once "CandidatoControlador.php";
-    require_once "AvaliacaoControlador.php";
-    require_once "../DTOs/EmpresaDTO.php";
-    require_once "EmpresaControlador.php";
-    $acao = $_GET['acao'];
-
-    switch($acao){
-        case "salvarEmpresa":
-            $empresaDTO = new EmpresaDTO();
-            $empresaDTO->nome = $_POST['nome'];
-            $empresaDTO->email = $_POST['email'];
-            $empresaDTO->senha = $_POST['senha'];
-            $empresaDTO->telefone = $_POST['telefone'];
-            $empresaControlador = new EmpresaControlador();
-            try{
-                $empresaControlador->salvar($empresaDTO);
-                header("Location:../index.html");
-            }catch(PDOException $erro){
-                echo "Erro na base de dados " . $erro->getMessage();
-            }catch(Exception $erro){
-                echo "Erro inesperado";
-            }
-            break;
-        case "autenticar":
-            $empresaDTO = new empresaDTO();
-            $empresaDTO->email = $_POST['email'];
-            $empresaDTO->senha = $_POST['senha'];
-            $empresaControlador = new empresaControlador();
-            try{
-                $empresa = $empresaControlador->autenticar($empresaDTO);
-                session_start();
-                $_SESSION['empresa'] = $empresa;
-                header("Location:../telas/home.php");
-            }catch(Exception $erro){
-                echo "Deu erro";
-                //redirecionar para a página de erro
-            }
-            break;
-        case "buscarEmpresa":
-            $pesquisa = $_GET['pesquisa'];
-            $empresaControlador = new EmpresaControlador();
-            $empresas = $empresaControlador->buscar($pesquisa);
-            require_once "../telas/busca.php";
-            break;
-        case "editarEmpresa":
-            $empresaDTO = new EmpresaDTO();
-            $empresaDTO->id = $_POST['id'];
-            $empresaDTO->nome = $_POST['nome'];
-            $empresaDTO->email = $_POST['email'];
-            $empresaDTO->telefone = $_POST['telefone'];
-            $empresaControlador = new EmpresaControlador();
-            try{
-                $empresaControlador->editar($empresaDTO);
-                header("Location: ../telas/busca.php");
-            }catch(PDOException $erro){
-                echo "Erro na base de dados: " . $erro->getMessage();
-            }catch(Exception $erro){
-                echo "Erro inesperado";
-            }
-            break;
-        case "excluirEmpresa":
-            $id = $_GET['id'];
-            $empresaControlador = new EmpresaControlador();
-            try{
-                $empresaControlador->excluir($id);
-                echo "<script>";
-                echo "alert('Empresa excluída com sucesso!');";
-                echo "window.location.href='../index.html';";
-                echo "</script>";
-            }catch(PDOException $erro){
-                echo "Erro na base de dados: " . $erro->getMessage();
-            }catch(Exception $erro){
-                echo "Erro inesperado: " . $erro->getMessage();
-            }
-            break;
-        case "salvarCandidato":
-            $candidatoDTO = new CandidatoDTO();
-
-            $candidatoDTO->nome = $_POST['nome'];
-            $candidatoDTO->email = $_POST['email'];
-            $candidatoDTO->senha = $_POST['senha'];
-            $candidatoDTO->telefone = $_POST['telefone'];
-            $candidatoDTO->formatoCurriculo = $_POST['formatoCurriculo'];
-
-            $candidatoControlador = new CandidatoControlador();
-
-            try{
-                $candidatoControlador->salvar($candidatoDTO);
-                header("Location: ../index.html");
-            }catch(PDOException $erro){
-                echo "Erro na base de dados: " . $erro->getMessage();
-            }catch(Exception $erro){
-                echo "Erro inesperado";
-            }
-            break;
-
-        case "autenticarCandidato":
-            $candidatoDTO = new CandidatoDTO();
-            $candidatoDTO->email = $_POST['email'];
-            $candidatoDTO->senha = $_POST['senha'];
-            $candidatoControlador = new CandidatoControlador();
-            try{
-                $candidato = $candidatoControlador->autenticar($candidatoDTO);
-                session_start();
-                $_SESSION['candidato'] = $candidato;
-                header("Location: ../telas/homeCandidato.php");
-            }catch(Exception $erro){
-                echo "E-mail ou senha não conferem";
-            }
-            break;
-        case "buscarCandidato":
-            $pesquisa = $_GET['pesquisa'];
-
-            $candidatoControlador = new CandidatoControlador();
-            $candidatos = $candidatoControlador->buscar($pesquisa);
-
-            require_once "../telas/buscaCandidato.php";
-            break;
-
-        case "editarCandidato":
-            $candidatoDTO = new CandidatoDTO();
-
-            $candidatoDTO->id = $_POST['id'];
-            $candidatoDTO->nome = $_POST['nome'];
-            $candidatoDTO->email = $_POST['email'];
-            $candidatoDTO->telefone = $_POST['telefone'];
-            $candidatoDTO->formatoCurriculo = $_POST['formatoCurriculo'];
-
-            $candidatoControlador = new CandidatoControlador();
-
-            try{
-                $candidatoControlador->editar($candidatoDTO);
-                header("Location: ../telas/homeCandidato.php");
-            }catch(PDOException $erro){
-                echo "Erro na base de dados: " . $erro->getMessage();
-            }catch(Exception $erro){
-                echo "Erro inesperado";
-            }
-            break;
-        case "excluirCandidato":
-            $id = $_GET['id'];
-
-            $candidatoControlador = new CandidatoControlador();
-
-            try{
-                $candidatoControlador->excluir($id);
-
-                echo "<script>";
-                echo "alert('Candidato excluído com sucesso!');";
-                echo "window.location.href='../index.html';";
-                echo "</script>";
-            }catch(Exception $erro){
-                echo "Erro ao excluir candidato: " . $erro->getMessage();
-            }
-            break;
-        case "sairCandidato":
-            session_start();
-            unset($_SESSION['candidato']);
-            header("Location: ../telas/autenticarCandidato.php");
-            break;
-        case "salvarAvaliacao":
-            session_start();
-
-            $avaliacaoDTO = new AvaliacaoDTO();
-
-            $avaliacaoDTO->empresaId = $_POST['empresaId'];
-            $avaliacaoDTO->candidatoId = $_SESSION['candidato']->getId();
-
-            $avaliacaoDTO->nota = $_POST['nota'];
-            $avaliacaoDTO->comentario = $_POST['comentario'];
-
-            $avaliacaoDTO->possuiRampa = $_POST['possuiRampa'];
-            $avaliacaoDTO->possuiBanheiroAdaptado = $_POST['possuiBanheiroAdaptado'];
-            $avaliacaoDTO->possuiSinalizacaoBraile = $_POST['possuiSinalizacaoBraile'];
-            $avaliacaoDTO->possuiAcessibilidadeDigital = $_POST['possuiAcessibilidadeDigital'];
-
-            $avaliacaoDTO->dataAvaliacao = date('Y-m-d H:i:s');
-
-            $avaliacaoControlador = new AvaliacaoControlador();
-
-            try{
-                $avaliacaoControlador->salvar($avaliacaoDTO);
-
-                echo "<script>";
-                echo "alert('Avaliação cadastrada com sucesso!');";
-                echo "window.location.href='../telas/homeCandidato.php';";
-                echo "</script>";
-            }catch(PDOException $erro){
-                echo "Erro na base de dados: " . $erro->getMessage();
-            }catch(Exception $erro){
-                echo "Erro inesperado";
-            }
-            break;
-
-        case "buscarAvaliacoes":
-            $empresaId = $_GET['empresaId'];
-
-            $avaliacaoControlador = new AvaliacaoControlador();
-            $avaliacoes = $avaliacaoControlador->buscarPorEmpresa($empresaId);
-
-            require_once "../telas/avaliacoes.php";
-            break;
-
-        case "editarAvaliacao":
-            $avaliacaoDTO = new AvaliacaoDTO();
-
-            $avaliacaoDTO->id = $_POST['id'];
-            $avaliacaoDTO->nota = $_POST['nota'];
-            $avaliacaoDTO->comentario = $_POST['comentario'];
-
-            $avaliacaoDTO->possuiRampa = $_POST['possuiRampa'];
-            $avaliacaoDTO->possuiBanheiroAdaptado = $_POST['possuiBanheiroAdaptado'];
-            $avaliacaoDTO->possuiSinalizacaoBraile = $_POST['possuiSinalizacaoBraile'];
-            $avaliacaoDTO->possuiAcessibilidadeDigital = $_POST['possuiAcessibilidadeDigital'];
-
-            $avaliacaoControlador = new AvaliacaoControlador();
-
-            try{
-                $avaliacaoControlador->editar($avaliacaoDTO);
-                header("Location: ../telas/homeCandidato.php");
-            }catch(Exception $erro){
-                echo "Erro ao editar avaliação: " . $erro->getMessage();
-            }
-            break;
-
-        case "excluirAvaliacao":
-            $id = $_GET['id'];
-
-            $avaliacaoControlador = new AvaliacaoControlador();
-
-            try{
-                $avaliacaoControlador->excluir($id);
-
-                echo "<script>";
-                echo "alert('Avaliação excluída com sucesso!');";
-                echo "window.location.href='../index.html';";
-                echo "</script>";
-            }catch(Exception $erro){
-                echo "Erro ao excluir avaliação: " . $erro->getMessage();
-            }
-            break;
-        }
-
-?>
+require_once __DIR__ . '/../DTOs/EmpresaDTO.php';
+require_once __DIR__ . '/../DTOs/CandidatoDTO.php';
+require_once __DIR__ . '/../DTOs/AvaliacaoDTO.php';
+require_once __DIR__ . '/EmpresaControlador.php';
+require_once __DIR__ . '/CandidatoControlador.php';
+require_once __DIR__ . '/AvaliacaoControlador.php';
+header('Content-Type: application/json; charset=utf-8');
+$acao = $_GET['acao'] ?? '';
+$dados = json_decode(file_get_contents('php://input'));
+switch ($acao) {
+case "salvarEmpresa":
+$dto = new EmpresaDTO();
+$dto->nome = $dados->nome ?? '';
+$dto->email = $dados->email ?? '';
+$dto->senha = $dados->senha ?? '';
+$dto->telefone = $dados->telefone ?? '';
+try {
+(new EmpresaControlador())->salvar($dto);
+http_response_code(201); echo json_encode(['sucesso'=>true,'mensagem'=>'Operação realizada com sucesso','redirecionar'=>'../index.html'], JSON_UNESCAPED_UNICODE);
+} catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
+break;
+case "autenticar":
+$dto = new EmpresaDTO();
+$dto->email = $dados->email ?? '';
+$dto->senha = $dados->senha ?? '';
+try {
+$entidade=(new EmpresaControlador())->autenticar($dto); session_start(); $_SESSION['empresa']=$entidade;
+http_response_code(200); echo json_encode(['sucesso'=>true,'mensagem'=>'Login realizado com sucesso','redirecionar'=>'../telas/home.php'], JSON_UNESCAPED_UNICODE);
+} catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
+break;
+case "editarEmpresa":
+$dto = new EmpresaDTO();
+$dto->id = $dados->id ?? 0;
+$dto->nome = $dados->nome ?? '';
+$dto->email = $dados->email ?? '';
+$dto->telefone = $dados->telefone ?? '';
+try {
+(new EmpresaControlador())->editar($dto);
+http_response_code(200); echo json_encode(['sucesso'=>true,'mensagem'=>'Operação realizada com sucesso','redirecionar'=>'../telas/busca.php'], JSON_UNESCAPED_UNICODE);
+} catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
+break;
+case "excluirEmpresa":
+$dto = new EmpresaDTO();
+$dto->id = $dados->id ?? 0;
+try {
+(new EmpresaControlador())->excluir($dto->id);
+http_response_code(200); echo json_encode(['sucesso'=>true,'mensagem'=>'Exclusão realizada com sucesso','redirecionar'=>'../index.html'], JSON_UNESCAPED_UNICODE);
+} catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
+break;
+case "sairEmpresa":
+session_start(); unset($_SESSION['empresa']); http_response_code(200); echo json_encode(['sucesso'=>true,'mensagem'=>'Sessão encerrada','redirecionar'=>'../telas/autenticar.html'], JSON_UNESCAPED_UNICODE);
+break;
+case "salvarCandidato":
+$dto = new CandidatoDTO();
+$dto->nome = $dados->nome ?? '';
+$dto->email = $dados->email ?? '';
+$dto->senha = $dados->senha ?? '';
+$dto->telefone = $dados->telefone ?? '';
+$dto->formatoCurriculo = $dados->formatoCurriculo ?? '';
+try {
+(new CandidatoControlador())->salvar($dto);
+http_response_code(201); echo json_encode(['sucesso'=>true,'mensagem'=>'Operação realizada com sucesso','redirecionar'=>'../index.html'], JSON_UNESCAPED_UNICODE);
+} catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
+break;
+case "autenticarCandidato":
+$dto = new CandidatoDTO();
+$dto->email = $dados->email ?? '';
+$dto->senha = $dados->senha ?? '';
+try {
+$entidade=(new CandidatoControlador())->autenticar($dto); session_start(); $_SESSION['candidato']=$entidade;
+http_response_code(200); echo json_encode(['sucesso'=>true,'mensagem'=>'Login realizado com sucesso','redirecionar'=>'../telas/homeCandidato.php'], JSON_UNESCAPED_UNICODE);
+} catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
+break;
+case "editarCandidato":
+$dto = new CandidatoDTO();
+$dto->id = $dados->id ?? 0;
+$dto->nome = $dados->nome ?? '';
+$dto->email = $dados->email ?? '';
+$dto->telefone = $dados->telefone ?? '';
+$dto->formatoCurriculo = $dados->formatoCurriculo ?? '';
+try {
+(new CandidatoControlador())->editar($dto);
+http_response_code(200); echo json_encode(['sucesso'=>true,'mensagem'=>'Operação realizada com sucesso','redirecionar'=>'../telas/homeCandidato.php'], JSON_UNESCAPED_UNICODE);
+} catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
+break;
+case "excluirCandidato":
+$dto = new CandidatoDTO();
+$dto->id = $dados->id ?? 0;
+try {
+(new CandidatoControlador())->excluir($dto->id);
+http_response_code(200); echo json_encode(['sucesso'=>true,'mensagem'=>'Exclusão realizada com sucesso','redirecionar'=>'../index.html'], JSON_UNESCAPED_UNICODE);
+} catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
+break;
+case "sairCandidato":
+session_start(); unset($_SESSION['candidato']); http_response_code(200); echo json_encode(['sucesso'=>true,'mensagem'=>'Sessão encerrada','redirecionar'=>'../telas/autenticarCandidato.php'], JSON_UNESCAPED_UNICODE);
+break;
+case "salvarAvaliacao":
+session_start(); if(!isset($_SESSION['candidato'])){http_response_code(401);echo json_encode(['sucesso'=>false,'mensagem'=>'Faça login como candidato.']);break;}
+$dto = new AvaliacaoDTO();
+$dto->empresaId = $dados->empresaId ?? 0;
+$dto->nota = $dados->nota ?? 0;
+$dto->comentario = $dados->comentario ?? '';
+$dto->possuiRampa = $dados->possuiRampa ?? 0;
+$dto->possuiBanheiroAdaptado = $dados->possuiBanheiroAdaptado ?? 0;
+$dto->possuiSinalizacaoBraile = $dados->possuiSinalizacaoBraile ?? 0;
+$dto->possuiAcessibilidadeDigital = $dados->possuiAcessibilidadeDigital ?? 0;
+$dto->candidatoId = $_SESSION['candidato']->getId(); $dto->dataAvaliacao = date('Y-m-d H:i:s');
+try {
+(new AvaliacaoControlador())->salvar($dto);
+http_response_code(201); echo json_encode(['sucesso'=>true,'mensagem'=>'Operação realizada com sucesso','redirecionar'=>'../telas/homeCandidato.php'], JSON_UNESCAPED_UNICODE);
+} catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
+break;
+case "editarAvaliacao":
+$dto = new AvaliacaoDTO();
+$dto->id = $dados->id ?? 0;
+$dto->nota = $dados->nota ?? 0;
+$dto->comentario = $dados->comentario ?? '';
+$dto->possuiRampa = $dados->possuiRampa ?? 0;
+$dto->possuiBanheiroAdaptado = $dados->possuiBanheiroAdaptado ?? 0;
+$dto->possuiSinalizacaoBraile = $dados->possuiSinalizacaoBraile ?? 0;
+$dto->possuiAcessibilidadeDigital = $dados->possuiAcessibilidadeDigital ?? 0;
+try {
+(new AvaliacaoControlador())->editar($dto);
+http_response_code(200); echo json_encode(['sucesso'=>true,'mensagem'=>'Operação realizada com sucesso','redirecionar'=>'../telas/homeCandidato.php'], JSON_UNESCAPED_UNICODE);
+} catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
+break;
+case "excluirAvaliacao":
+$dto = new AvaliacaoDTO();
+$dto->id = $dados->id ?? 0;
+try {
+(new AvaliacaoControlador())->excluir($dto->id);
+http_response_code(200); echo json_encode(['sucesso'=>true,'mensagem'=>'Exclusão realizada com sucesso','redirecionar'=>'../index.html'], JSON_UNESCAPED_UNICODE);
+} catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
+break;
+case "buscarEmpresa":
+try {
+$objetos=(new EmpresaControlador())->buscar($dados->pesquisa ?? ''); $lista=[];
+foreach($objetos as $obj){ $lista[]=['id'=>$obj->getId(),'nome'=>$obj->getNome(),'email'=>$obj->getEmail(),'telefone'=>$obj->getTelefone()]; }
+echo json_encode(['sucesso'=>true,'empresas'=>$lista],JSON_UNESCAPED_UNICODE);
+} catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
+break;
+case "buscarCandidato":
+try {
+$objetos=(new CandidatoControlador())->buscar($dados->pesquisa ?? ''); $lista=[];
+foreach($objetos as $obj){ $lista[]=['id'=>$obj->getId(),'nome'=>$obj->getNome(),'email'=>$obj->getEmail(),'telefone'=>$obj->getTelefone(),'formatoCurriculo'=>$obj->getFormatoCurriculo()]; }
+echo json_encode(['sucesso'=>true,'candidatos'=>$lista],JSON_UNESCAPED_UNICODE);
+} catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
+break;
+case "buscarAvaliacoes":
+try {
+$objetos=(new AvaliacaoControlador())->buscarPorEmpresa($dados->empresaId ?? 0); $lista=[];
+foreach($objetos as $obj){ $lista[]=['id'=>$obj->getId(),'nota'=>$obj->getNota(),'comentario'=>$obj->getComentario(),'possuiRampa'=>$obj->getPossuiRampa(),'possuiBanheiroAdaptado'=>$obj->getPossuiBanheiroAdaptado(),'possuiSinalizacaoBraile'=>$obj->getPossuiSinalizacaoBraile(),'possuiAcessibilidadeDigital'=>$obj->getPossuiAcessibilidadeDigital(),'dataAvaliacao'=>$obj->getDataAvaliacao()]; }
+echo json_encode(['sucesso'=>true,'avaliacoes'=>$lista],JSON_UNESCAPED_UNICODE);
+} catch (Throwable $erro) { http_response_code(400); echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE); }
+break;
+default: http_response_code(404); echo json_encode(['sucesso'=>false,'mensagem'=>'Ação desconhecida']);
+}

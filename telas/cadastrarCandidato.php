@@ -10,33 +10,33 @@
 
     <h1>Cadastro de Candidato</h1>
 
-    <form action="../controladores/rota.php?acao=salvarCandidato" method="POST">
+    <form>
 
         Nome:
-        <input type="text" name="nome" required>
+        <input type="text" name="nome" required id="nome">
         <br><br>
 
         Email:
-        <input type="email" name="email" required>
+        <input type="email" name="email" required id="email">
         <br><br>
 
         Senha:
-        <input type="password" name="senha" required>
+        <input type="password" name="senha" required id="senha">
         <br><br>
 
         Telefone:
-        <input type="text" name="telefone">
+        <input type="text" name="telefone" id="telefone">
         <br><br>
 
         Formato do currículo:
-        <select name="formatoCurriculo">
+        <select name="formatoCurriculo" id="formatoCurriculo">
             <option value="Texto">Texto</option>
             <option value="Libras">Vídeo em Libras</option>
             <option value="Audio">Áudio</option>
         </select>
         <br><br>
 
-        <button type="submit">Cadastrar</button>
+        <button type="button" onclick="salvarCandidato()">Cadastrar</button>
 
     </form>
 
@@ -45,5 +45,6 @@
 
     <a href="../index.html">Sair</a>
 
+<script src="../scripts/candidato.js"></script>
 </body>
 </html>

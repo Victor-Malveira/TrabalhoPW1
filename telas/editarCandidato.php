@@ -17,24 +17,24 @@ $candidato = $candidatoControlador->buscarPeloId($id);
 
     <h1>Editar Candidato</h1>
 
-    <form action="../controladores/rota.php?acao=editarCandidato" method="POST">
+    <form>
 
-        <input type="hidden" name="id" value="<?= $candidato->getId(); ?>">
+        <input type="hidden" name="id" value="<?= $candidato- id="id">getId(); ?>">
 
         Nome:
-        <input type="text" name="nome" value="<?= $candidato->getNome(); ?>">
+        <input type="text" name="nome" value="<?= $candidato- id="nome">getNome(); ?>">
         <br><br>
 
         Email:
-        <input type="email" name="email" value="<?= $candidato->getEmail(); ?>">
+        <input type="email" name="email" value="<?= $candidato- id="email">getEmail(); ?>">
         <br><br>
 
         Telefone:
-        <input type="text" name="telefone" value="<?= $candidato->getTelefone(); ?>">
+        <input type="text" name="telefone" value="<?= $candidato- id="telefone">getTelefone(); ?>">
         <br><br>
 
         Formato do currículo:
-        <select name="formatoCurriculo">
+        <select name="formatoCurriculo" id="formatoCurriculo">
             <option value="Texto" <?= $candidato->getFormatoCurriculo() == "Texto" ? "selected" : ""; ?>>Texto</option>
 
             <option value="Libras" <?= $candidato->getFormatoCurriculo() == "Libras" ? "selected" : ""; ?>>Vídeo em Libras</option>
@@ -44,12 +44,13 @@ $candidato = $candidatoControlador->buscarPeloId($id);
 
         <br><br>
 
-        <button type="submit">Salvar alterações</button>
+        <button type="button" onclick="editarCandidato()">Salvar alterações</button>
 
     </form>
 
     <br>
     <a href="homeCandidato.php">Voltar</a>
 
+<script src="../scripts/candidato.js"></script>
 </body>
 </html>

@@ -10,22 +10,23 @@
 
     <h1>Login do Candidato</h1>
 
-    <form action="../controladores/rota.php?acao=autenticarCandidato" method="POST">
+    <form>
 
         Email:
-        <input type="email" name="email" required>
+        <input type="email" name="email" required id="email">
         <br><br>
 
         Senha:
-        <input type="password" name="senha" required>
+        <input type="password" name="senha" required id="senha">
         <br><br>
 
-        <button type="submit">Entrar</button>
+        <button type="button" onclick="autenticarCandidato()">Entrar</button>
 
     </form>
 
     <br>
     <a href="cadastrarCandidato.php">Criar uma conta</a><br>
     <a href="../index.html">Sair</a>
+<script src="../scripts/candidato.js"></script>
 </body>
 </html>

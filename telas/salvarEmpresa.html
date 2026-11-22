@@ -6,12 +6,13 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="../controladores/rota.php?acao=salvarEmpresa" method="POST">
-        Nome:<input type="text" name="nome">
-        Email:<input type="text" name="email">
-        Senha:<input type="password" name="senha">
-        Telefone:<input type="text" name="telefone">
-        <button>Salvar</button>
+    <form>
+        Nome:<input type="text" name="nome" id="nome">
+        Email:<input type="text" name="email" id="email">
+        Senha:<input type="password" name="senha" id="senha">
+        Telefone:<input type="text" name="telefone" id="telefone">
+        <button type="button" onclick="salvarEmpresa()">Salvar</button>
     </form>    
+<script src="../scripts/empresa.js"></script>
 </body>
 </html>

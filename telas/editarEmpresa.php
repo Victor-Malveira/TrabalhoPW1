@@ -13,20 +13,20 @@ $empresa = $empresaControlador->buscarPeloId($id);
 </head>
 <body>
     <h1>Editar Empresa</h1>
-    <form action="../controladores/rota.php?acao=editarEmpresa" method="POST">
+    <form>
 
-        <input type="hidden" name="id" value="<?= $empresa->getId(); ?>">
+        <input type="hidden" name="id" value="<?= $empresa- id="id">getId(); ?>">
         <label>Nome:</label>
-        <input type="text" name="nome" value="<?= $empresa->getNome(); ?>">
+        <input type="text" name="nome" value="<?= $empresa- id="nome">getNome(); ?>">
         <br><br>
         <label>E-mail:</label>
-        <input type="text" name="email" value="<?= $empresa->getEmail(); ?>">
+        <input type="text" name="email" value="<?= $empresa- id="email">getEmail(); ?>">
         <br><br>
         <label>Telefone:</label>
-        <input type="text" name="telefone" value="<?= $empresa->getTelefone(); ?>">
+        <input type="text" name="telefone" value="<?= $empresa- id="telefone">getTelefone(); ?>">
         <br><br>
 
-        <button type="submit">
+        <button type="button" onclick="editarEmpresa()">
             Salvar alterações
         </button>
 
@@ -34,5 +34,6 @@ $empresa = $empresaControlador->buscarPeloId($id);
     <br>
     <a href="gestao.php">Voltar</a>
 
+<script src="../scripts/empresa.js"></script>
 </body>
 </html>
