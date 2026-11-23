@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 04/11/2026 às 21:02
+-- Tempo de geração: 23/11/2026 às 17:09
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -40,13 +40,6 @@ CREATE TABLE `avaliacao` (
   `dataAvaliacao` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
---
--- Despejando dados para a tabela `avaliacao`
---
-
-INSERT INTO `avaliacao` (`id`, `empresaId`, `candidatoId`, `nota`, `comentario`, `possuiRampa`, `possuiBanheiroAdaptado`, `possuiSinalizacaoBraile`, `possuiAcessibilidadeDigital`, `dataAvaliacao`) VALUES
-(1, 17, 1, 1, 'Pessoas ignorantes!', 0, 0, 0, 0, '2026-11-04 20:44:38');
-
 -- --------------------------------------------------------
 
 --
@@ -61,13 +54,6 @@ CREATE TABLE `candidato` (
   `telefone` varchar(20) DEFAULT NULL,
   `formatoCurriculo` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Despejando dados para a tabela `candidato`
---
-
-INSERT INTO `candidato` (`id`, `nome`, `email`, `senha`, `telefone`, `formatoCurriculo`) VALUES
-(1, 'Victor', 'joaoVictor@gmail.com', '$2y$10$CahgMMOl4fBqBQTndLoGCeJil3td4K5p52alK23A1STKMNyraM8ne', '1234', 'Texto');
 
 -- --------------------------------------------------------
 
@@ -84,13 +70,6 @@ CREATE TABLE `empresa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `empresa`
---
-
-INSERT INTO `empresa` (`id`, `nome`, `email`, `senha`, `telefone`) VALUES
-(17, 'Arasuper', 'arasuper', '$2y$10$AGlqQkFI6miFG3OnZpUWVutEM6sm6paZ74zCTdSgacXb5bz9Uj4C6', '1234');
-
---
 -- Índices para tabelas despejadas
 --
 
@@ -98,16 +77,13 @@ INSERT INTO `empresa` (`id`, `nome`, `email`, `senha`, `telefone`) VALUES
 -- Índices de tabela `avaliacao`
 --
 ALTER TABLE `avaliacao`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `empresaId` (`empresaId`),
-  ADD KEY `candidatoId` (`candidatoId`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Índices de tabela `candidato`
 --
 ALTER TABLE `candidato`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Índices de tabela `empresa`
@@ -124,30 +100,19 @@ ALTER TABLE `empresa`
 -- AUTO_INCREMENT de tabela `avaliacao`
 --
 ALTER TABLE `avaliacao`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de tabela `candidato`
 --
 ALTER TABLE `candidato`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de tabela `empresa`
 --
 ALTER TABLE `empresa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
-
---
--- Restrições para tabelas despejadas
---
-
---
--- Restrições para tabelas `avaliacao`
---
-ALTER TABLE `avaliacao`
-  ADD CONSTRAINT `avaliacao_ibfk_1` FOREIGN KEY (`empresaId`) REFERENCES `empresa` (`id`),
-  ADD CONSTRAINT `avaliacao_ibfk_2` FOREIGN KEY (`candidatoId`) REFERENCES `candidato` (`id`);
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
