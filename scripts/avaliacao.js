@@ -81,6 +81,11 @@ async function buscarAvaliacoes() {
         });
         const dados=await resposta.json();
         if(!resposta.ok || !dados.sucesso)throw new Error(dados.mensagem || "Erro");
+        lista.replaceChildren();
+        const aviso = document.getElementById("avisoLogin");
+        if (aviso) {
+            aviso.hidden = !!dados.autenticado;
+        }
         if(!dados.avaliacoes.length){lista.textContent="Essa empresa ainda não possui avaliações.";return;}
         for(const av of dados.avaliacoes){
             const div=document.createElement("div"),h=document.createElement("h3");

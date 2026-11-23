@@ -290,7 +290,7 @@ switch ($acao) {
             foreach($objetos as $obj) {
                 $lista[]=['id'=>$obj->getId(),'nota'=>$obj->getNota(),'comentario'=>$obj->getComentario(),'possuiRampa'=>$obj->getPossuiRampa(),'possuiBanheiroAdaptado'=>$obj->getPossuiBanheiroAdaptado(),'possuiSinalizacaoBraile'=>$obj->getPossuiSinalizacaoBraile(),'possuiAcessibilidadeDigital'=>$obj->getPossuiAcessibilidadeDigital(),'dataAvaliacao'=>$obj->getDataAvaliacao(), 'podeEditar'=>$autorId > 0 && (int)$obj->getCandidatoId() === $autorId];
             }
-            echo json_encode(['sucesso'=>true,'avaliacoes'=>$lista],JSON_UNESCAPED_UNICODE);
+            echo json_encode(['sucesso'=>true,'autenticado'=>$autorId > 0,'avaliacoes'=>$lista],JSON_UNESCAPED_UNICODE);
         } catch (Throwable $erro) {
             http_response_code(400);
             echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
