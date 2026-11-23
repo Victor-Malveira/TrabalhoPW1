@@ -16,6 +16,6 @@ $empresa=(new EmpresaControlador())->buscarPeloId($empresaId);
     <p id="mensagem" role="status" aria-live="polite"></p>
     <p id="avisoLogin" hidden>Você precisa <a href="autenticarCandidato.php">entrar como candidato</a> para editar ou excluir suas avaliações.</p>
     <div id="listaAvaliacoes" data-empresa-id="<?= $empresaId ?>"></div>
-    <script src="../scripts/avaliacao.js?v=2"></script>
+    <script src="../scripts/avaliacao.js?v=4"></script>
 </body>
 </html>
