@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "TrabalhoPW1 - Testes JSON",
-    "description": "Coleção Postman v2.1 baseada nas ações reais de controladores/rota.php. Configure baseUrl (pasta local no XAMPP), emails, senhas e IDs de registros de teste. As requisições de cadastro podem falhar por email já existente. Testes negativos são esperados como erros. POST com JSON em todas as rotas.",
+    "description": "Coleção Postman com exemplos completos de JSON e IDs obtidos pelas buscas. Alterar e-mails para repetir cadastros. Executar exclusões somente em banco de testes. Cookies PHPSESSID necessários para avaliações.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -11,11 +11,11 @@
     },
     {
       "key": "empresaEmail",
-      "value": ""
+      "value": "empresa.postman.pw1.20261123@example.com"
     },
     {
       "key": "empresaSenha",
-      "value": ""
+      "value": "123456"
     },
     {
       "key": "empresaId",
@@ -23,11 +23,11 @@
     },
     {
       "key": "candidatoEmail",
-      "value": ""
+      "value": "candidato.postman.pw1.20261123@example.com"
     },
     {
       "key": "candidatoSenha",
-      "value": ""
+      "value": "123456"
     },
     {
       "key": "candidatoId",
@@ -160,7 +160,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"pesquisa\": \"Empresa Teste\"\n}",
+              "raw": "{\n  \"pesquisa\": \"Empresa Teste Postman\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -178,7 +178,13 @@
                   "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
                   "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
                   "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });",
-                  "pm.test(\"Lista empresas retornada\", function () { pm.expect(pm.response.json().empresas).to.be.an(\"array\"); });"
+                  "pm.test(\"Lista empresas retornada\", function () { pm.expect(pm.response.json().empresas).to.be.an(\"array\"); });",
+                  "if (pm.response.code === 200) {",
+                  "  const lista = pm.response.json().empresas || [];",
+                  "  const achada = lista.find(x => x.nome === \"Empresa Teste Postman\" || x.nome === \"Empresa Teste Atualizada\");",
+                  "  if (achada && Number(achada.id) > 0) pm.collectionVariables.set(\"empresaId\", String(achada.id));",
+                  "  pm.test(\"Empresa de teste encontrada com ID válido\", () => pm.expect(!!achada && Number(achada.id) > 0).to.eql(true));",
+                  "}"
                 ]
               }
             }
@@ -401,7 +407,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"pesquisa\": \"Candidato Teste\"\n}",
+              "raw": "{\n  \"pesquisa\": \"Candidato Teste Postman\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -419,7 +425,13 @@
                   "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
                   "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
                   "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });",
-                  "pm.test(\"Lista candidatos retornada\", function () { pm.expect(pm.response.json().candidatos).to.be.an(\"array\"); });"
+                  "pm.test(\"Lista candidatos retornada\", function () { pm.expect(pm.response.json().candidatos).to.be.an(\"array\"); });",
+                  "if (pm.response.code === 200) {",
+                  "  const lista = pm.response.json().candidatos || [];",
+                  "  const achado = lista.find(x => x.nome === \"Candidato Teste Postman\" || x.nome === \"Candidato Teste Atualizado\");",
+                  "  if (achado && Number(achado.id) > 0) pm.collectionVariables.set(\"candidatoId\", String(achado.id));",
+                  "  pm.test(\"Candidato de teste encontrado com ID válido\", () => pm.expect(!!achado && Number(achado.id) > 0).to.eql(true));",
+                  "}"
                 ]
               }
             }
@@ -566,7 +578,13 @@
                   "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
                   "pm.test(\"Resposta JSON válida\", function () { pm.response.to.be.json; });",
                   "pm.test(\"Campo sucesso = true\", function () { pm.expect(pm.response.json().sucesso).to.eql(true); });",
-                  "pm.test(\"Lista avaliacoes retornada\", function () { pm.expect(pm.response.json().avaliacoes).to.be.an(\"array\"); });"
+                  "pm.test(\"Lista avaliacoes retornada\", function () { pm.expect(pm.response.json().avaliacoes).to.be.an(\"array\"); });",
+                  "if (pm.response.code === 200) {",
+                  "  const lista = pm.response.json().avaliacoes || [];",
+                  "  const achada = lista.find(x => x.podeEditar === true && [\"Teste de acessibilidade via Postman\", \"Comentário atualizado pelo Postman\"].includes(x.comentario));",
+                  "  if (achada && Number(achada.id) > 0) pm.collectionVariables.set(\"avaliacaoId\", String(achada.id));",
+                  "  pm.test(\"Avaliação própria encontrada com ID válido\", () => pm.expect(!!achada && Number(achada.id) > 0).to.eql(true));",
+                  "}"
                 ]
               }
             }
@@ -742,7 +760,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"empresaId\": \"{{empresaId}}\",\n  \"nota\": 3,\n  \"comentario\": \"Deve falhar\",\n  \"possuiRampa\": 1,\n  \"possuiBanheiroAdaptado\": 0,\n  \"possuiSinalizacaoBraile\": 0,\n  \"possuiAcessibilidadeDigital\": 1\n}",
+              "raw": "{\n  \"empresaId\": \"{{empresaId}}\",\n  \"nota\": 5,\n  \"comentario\": \"Teste de acessibilidade via Postman\",\n  \"possuiRampa\": 1,\n  \"possuiBanheiroAdaptado\": 1,\n  \"possuiSinalizacaoBraile\": 0,\n  \"possuiAcessibilidadeDigital\": 1\n}",
               "options": {
                 "raw": {
                   "language": "json"
