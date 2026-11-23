@@ -52,18 +52,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=salvarEmpresa",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "salvarEmpresa"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=salvarEmpresa",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"nome\": \"Empresa Teste Postman\",\n  \"email\": \"{{empresaEmail}}\",\n  \"senha\": \"{{empresaSenha}}\",\n  \"telefone\": \"68999990000\"\n}",
@@ -99,18 +88,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=autenticar",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "autenticar"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=autenticar",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"{{empresaEmail}}\",\n  \"senha\": \"{{empresaSenha}}\"\n}",
@@ -146,18 +124,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=buscarEmpresa",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "buscarEmpresa"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=buscarEmpresa",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"pesquisa\": \"Empresa Teste Postman\"\n}",
@@ -200,18 +167,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=editarEmpresa",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "editarEmpresa"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=editarEmpresa",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"id\": \"{{empresaId}}\",\n  \"nome\": \"Empresa Teste Atualizada\",\n  \"email\": \"{{empresaEmail}}\",\n  \"telefone\": \"68999998888\"\n}",
@@ -247,18 +203,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=sairEmpresa",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "sairEmpresa"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=sairEmpresa",
             "body": {
               "mode": "raw",
               "raw": "{}",
@@ -299,18 +244,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=salvarCandidato",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "salvarCandidato"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=salvarCandidato",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"nome\": \"Candidato Teste Postman\",\n  \"email\": \"{{candidatoEmail}}\",\n  \"senha\": \"{{candidatoSenha}}\",\n  \"telefone\": \"68999997777\",\n  \"formatoCurriculo\": \"Texto\"\n}",
@@ -346,18 +280,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=autenticarCandidato",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "autenticarCandidato"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=autenticarCandidato",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"{{candidatoEmail}}\",\n  \"senha\": \"{{candidatoSenha}}\"\n}",
@@ -393,18 +316,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=buscarCandidato",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "buscarCandidato"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=buscarCandidato",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"pesquisa\": \"Candidato Teste Postman\"\n}",
@@ -447,18 +359,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=editarCandidato",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "editarCandidato"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=editarCandidato",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"id\": \"{{candidatoId}}\",\n  \"nome\": \"Candidato Teste Atualizado\",\n  \"email\": \"{{candidatoEmail}}\",\n  \"telefone\": \"68999996666\",\n  \"formatoCurriculo\": \"Libras\"\n}",
@@ -499,18 +400,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=salvarAvaliacao",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "salvarAvaliacao"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=salvarAvaliacao",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"empresaId\": \"{{empresaId}}\",\n  \"nota\": 5,\n  \"comentario\": \"Teste de acessibilidade via Postman\",\n  \"possuiRampa\": 1,\n  \"possuiBanheiroAdaptado\": 1,\n  \"possuiSinalizacaoBraile\": 0,\n  \"possuiAcessibilidadeDigital\": 1\n}",
@@ -546,18 +436,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=buscarAvaliacoes",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "buscarAvaliacoes"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=buscarAvaliacoes",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"empresaId\": \"{{empresaId}}\"\n}",
@@ -600,18 +479,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=editarAvaliacao",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "editarAvaliacao"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=editarAvaliacao",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"id\": \"{{avaliacaoId}}\",\n  \"nota\": 4,\n  \"comentario\": \"Comentário atualizado pelo Postman\",\n  \"possuiRampa\": 1,\n  \"possuiBanheiroAdaptado\": 0,\n  \"possuiSinalizacaoBraile\": 0,\n  \"possuiAcessibilidadeDigital\": 1\n}",
@@ -647,18 +515,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=sairCandidato",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "sairCandidato"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=sairCandidato",
             "body": {
               "mode": "raw",
               "raw": "{}",
@@ -699,18 +556,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=autenticar",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "autenticar"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=autenticar",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"{{empresaEmail}}\",\n  \"senha\": \"senha-incorreta\"\n}",
@@ -746,18 +592,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=salvarAvaliacao",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "salvarAvaliacao"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=salvarAvaliacao",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"empresaId\": \"{{empresaId}}\",\n  \"nota\": 5,\n  \"comentario\": \"Teste de acessibilidade via Postman\",\n  \"possuiRampa\": 1,\n  \"possuiBanheiroAdaptado\": 1,\n  \"possuiSinalizacaoBraile\": 0,\n  \"possuiAcessibilidadeDigital\": 1\n}",
@@ -793,18 +628,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=acaoInexistente",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "acaoInexistente"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=acaoInexistente",
             "body": {
               "mode": "raw",
               "raw": "{}",
@@ -845,18 +669,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=excluirAvaliacao",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "excluirAvaliacao"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=excluirAvaliacao",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"id\": \"{{avaliacaoId}}\"\n}",
@@ -892,18 +705,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=excluirCandidato",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "excluirCandidato"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=excluirCandidato",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"id\": \"{{candidatoId}}\"\n}",
@@ -939,18 +741,7 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}?acao=excluirEmpresa",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [
-                {
-                  "key": "acao",
-                  "value": "excluirEmpresa"
-                }
-              ]
-            },
+            "url": "{{baseUrl}}?acao=excluirEmpresa",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"id\": \"{{empresaId}}\"\n}",
