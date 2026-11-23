@@ -86,12 +86,12 @@ class AvaliacaoDAO{
         return null;
     }
 
-    public function editar($avaliacao, $conn){
+    public function editar($avaliacao, $autorId, $conn){
         $sql = "UPDATE Avaliacao SET
                 nota = ?, comentario = ?, possuiRampa = ?,
                 possuiBanheiroAdaptado = ?, possuiSinalizacaoBraile = ?,
                 possuiAcessibilidadeDigital = ?
-                WHERE id = ?";
+                WHERE id = ? AND candidatoId = ?";
 
         $stmt = $conn->prepare($sql);
 
@@ -102,15 +102,17 @@ class AvaliacaoDAO{
         $stmt->bindValue(5, $avaliacao->getPossuiSinalizacaoBraile(), PDO::PARAM_BOOL);
         $stmt->bindValue(6, $avaliacao->getPossuiAcessibilidadeDigital(), PDO::PARAM_BOOL);
         $stmt->bindValue(7, $avaliacao->getId());
+        $stmt->bindValue(8, $autorId);
 
         $stmt->execute();
     }
 
-    public function excluir($id, $conn){
-        $sql = "DELETE FROM Avaliacao WHERE id = ?";
+    public function excluir($id, $autorId, $conn){
+        $sql = "DELETE FROM Avaliacao WHERE id = ? AND candidatoId = ?";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(1, $id);
+        $stmt->bindValue(2, $autorId);
         $stmt->execute();
     }
 }

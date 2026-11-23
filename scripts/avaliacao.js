@@ -35,60 +35,41 @@ async function salvarAvaliacao(formulario) {
     }
 }
 
-async function editarAvaliacao() {
-    const id = document.getElementById("id")?.value ?? "";
-    const nota = document.getElementById("nota")?.value ?? "";
-    const comentario = document.getElementById("comentario")?.value ?? "";
-    const possuiRampa = document.getElementById("possuiRampa")?.value ?? "";
-    const possuiBanheiroAdaptado = document.getElementById("possuiBanheiroAdaptado")?.value ?? "";
-    const possuiSinalizacaoBraile = document.getElementById("possuiSinalizacaoBraile")?.value ?? "";
-    const possuiAcessibilidadeDigital = document.getElementById("possuiAcessibilidadeDigital")?.value ?? "";
+async function editarAvaliacao(formulario) {
+    const id = formulario.elements.namedItem("id").value;
+    const nota = formulario.elements.namedItem("nota").value;
+    const comentario = formulario.elements.namedItem("comentario").value;
+    const possuiRampa = formulario.elements.namedItem("possuiRampa").value;
+    const possuiBanheiroAdaptado = formulario.elements.namedItem("possuiBanheiroAdaptado").value;
+    const possuiSinalizacaoBraile = formulario.elements.namedItem("possuiSinalizacaoBraile").value;
+    const possuiAcessibilidadeDigital = formulario.elements.namedItem("possuiAcessibilidadeDigital").value;
     const avaliacao = { id, nota, comentario, possuiRampa, possuiBanheiroAdaptado, possuiSinalizacaoBraile, possuiAcessibilidadeDigital };
     try {
         const resposta = await fetch("../controladores/rota.php?acao=editarAvaliacao", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: "POST", headers: { "Content-Type": "application/json" },
             body: JSON.stringify(avaliacao)
         });
         const dados = await resposta.json();
-        if (resposta.ok && dados.sucesso) {
-            mostrarMensagemAvaliacao(dados.mensagem, true);
-            if (dados.redirecionar) {
-                const destino = new URL(dados.redirecionar, resposta.url).href;
-                setTimeout(() => { window.location.href = destino; }, 1500);
-            }
-        } else {
-            mostrarMensagemAvaliacao(dados.mensagem || "Não foi possível realizar a operação.", false);
-        }
+        mostrarMensagemAvaliacao(dados.mensagem || "Erro ao editar.", resposta.ok && dados.sucesso);
+        if (resposta.ok && dados.sucesso) await buscarAvaliacoes();
     } catch (erro) {
         mostrarMensagemAvaliacao(erro.message, false);
     }
 }
 
-async function excluirAvaliacao() {
-    const id = document.getElementById("id")?.value ?? "";
-    const avaliacao = { id };
+async function excluirAvaliacao(id) {
     try {
         const resposta = await fetch("../controladores/rota.php?acao=excluirAvaliacao", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(avaliacao)
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id })
         });
         const dados = await resposta.json();
-        if (resposta.ok && dados.sucesso) {
-            mostrarMensagemAvaliacao(dados.mensagem, true);
-            if (dados.redirecionar) {
-                const destino = new URL(dados.redirecionar, resposta.url).href;
-                setTimeout(() => { window.location.href = destino; }, 1500);
-            }
-        } else {
-            mostrarMensagemAvaliacao(dados.mensagem || "Não foi possível realizar a operação.", false);
-        }
+        mostrarMensagemAvaliacao(dados.mensagem || "Erro ao excluir.", resposta.ok && dados.sucesso);
+        if (resposta.ok && dados.sucesso) await buscarAvaliacoes();
     } catch (erro) {
         mostrarMensagemAvaliacao(erro.message, false);
     }
 }
-
 
 async function buscarAvaliacoes() {
     const lista=document.getElementById("listaAvaliacoes");
@@ -108,6 +89,65 @@ async function buscarAvaliacoes() {
                 const p=document.createElement("p");
                 p.textContent=nome+": "+(campo.startsWith("possui")?(av[campo]?"Sim":"Não"):(av[campo]??""));
                 div.appendChild(p);
+            }
+            if (av.podeEditar) {
+                const editar = document.createElement("button");
+                editar.type = "button";
+                editar.textContent = "Editar";
+                const formulario = document.createElement("form");
+                formulario.hidden = true;
+                const id = document.createElement("input");
+                id.type = "hidden";
+                id.name = "id";
+                id.value = av.id;
+                formulario.appendChild(id);
+                const campos = {
+                    nota: "Nota", comentario: "Comentário", possuiRampa: "Rampa",
+                    possuiBanheiroAdaptado: "Banheiro adaptado",
+                    possuiSinalizacaoBraile: "Sinalização Braille",
+                    possuiAcessibilidadeDigital: "Acessibilidade digital"
+                };
+                for (const [campo, rotulo] of Object.entries(campos)) {
+                    const label = document.createElement("label");
+                    label.textContent = rotulo + ": ";
+                    let entrada;
+                    if (campo === "comentario") {
+                        entrada = document.createElement("textarea");
+                        entrada.value = av.comentario ?? "";
+                    } else {
+                        entrada = document.createElement("select");
+                        for (const valor of (campo === "nota" ? ["1","2","3","4","5"] : ["1","0"])) {
+                            const opcao = document.createElement("option");
+                            opcao.value = valor;
+                            opcao.textContent = campo === "nota" ? valor : (valor === "1" ? "Sim" : "Não");
+                            opcao.selected = String(av[campo]) === valor;
+                            entrada.appendChild(opcao);
+                        }
+                    }
+                    entrada.name = campo;
+                    label.appendChild(entrada);
+                    formulario.appendChild(label);
+                    formulario.appendChild(document.createElement("br"));
+                }
+                const salvar = document.createElement("button");
+                salvar.type = "button";
+                salvar.textContent = "Salvar alterações";
+                salvar.onclick = () => editarAvaliacao(formulario);
+                formulario.appendChild(salvar);
+                editar.onclick = () => { formulario.hidden = !formulario.hidden; };
+                div.appendChild(editar);
+                div.appendChild(formulario);
+                const excluir = document.createElement("button");
+                excluir.type = "button";
+                excluir.textContent = "Excluir";
+                const confirmar = document.createElement("button");
+                confirmar.type = "button";
+                confirmar.textContent = "Confirmar exclusão";
+                confirmar.hidden = true;
+                excluir.onclick = () => { confirmar.hidden = !confirmar.hidden; };
+                confirmar.onclick = () => excluirAvaliacao(av.id);
+                div.appendChild(excluir);
+                div.appendChild(confirmar);
             }
             div.appendChild(document.createElement("hr"));lista.appendChild(div);
         }

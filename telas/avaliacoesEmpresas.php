@@ -13,6 +13,7 @@ $empresa=(new EmpresaControlador())->buscarPeloId($empresaId);
     <h1><?= htmlspecialchars($empresa->getNome()) ?></h1>
     <h2>Avaliações da empresa</h2>
     <a href="busca.php">Voltar para a busca</a>
+    <p id="mensagem" role="status" aria-live="polite"></p>
     <div id="listaAvaliacoes" data-empresa-id="<?= $empresaId ?>"></div>
     <script src="../scripts/avaliacao.js"></script>
 </body>

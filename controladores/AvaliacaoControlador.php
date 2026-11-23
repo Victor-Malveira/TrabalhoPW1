@@ -34,7 +34,7 @@ class AvaliacaoControlador{
         return $avaliacaoServico->buscarPeloId($id);
     }
 
-    public function editar($avaliacaoDTO){
+    public function editar($avaliacaoDTO, $autorId){
         $avaliacao = new Avaliacao();
 
         $avaliacao->setId($avaliacaoDTO->id);
@@ -46,12 +46,12 @@ class AvaliacaoControlador{
         $avaliacao->setPossuiAcessibilidadeDigital($avaliacaoDTO->possuiAcessibilidadeDigital);
 
         $avaliacaoServico = new AvaliacaoServico();
-        $avaliacaoServico->editar($avaliacao);
+        $avaliacaoServico->editar($avaliacao, $autorId);
     }
 
-    public function excluir($id){
+    public function excluir($id, $autorId){
         $avaliacaoServico = new AvaliacaoServico();
-        $avaliacaoServico->excluir($id);
+        $avaliacaoServico->excluir($id, $autorId);
     }
 }
 ?>

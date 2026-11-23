@@ -202,33 +202,57 @@ switch ($acao) {
         }
         break;
     case "editarAvaliacao":
-        $dto = new AvaliacaoDTO();
-        $dto->id = $dados->id ?? 0;
-        $dto->nota = $dados->nota ?? 0;
-        $dto->comentario = $dados->comentario ?? '';
-        $dto->possuiRampa = $dados->possuiRampa ?? 0;
-        $dto->possuiBanheiroAdaptado = $dados->possuiBanheiroAdaptado ?? 0;
-        $dto->possuiSinalizacaoBraile = $dados->possuiSinalizacaoBraile ?? 0;
-        $dto->possuiAcessibilidadeDigital = $dados->possuiAcessibilidadeDigital ?? 0;
-        try {
-            (new AvaliacaoControlador())->editar($dto);
-            http_response_code(200);
-            echo json_encode(['sucesso'=>true,'mensagem'=>'Operação realizada com sucesso','redirecionar'=>'../telas/homeCandidato.php'], JSON_UNESCAPED_UNICODE);
-        } catch (Throwable $erro) {
-            http_response_code(400);
-            echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
-        }
-        break;
     case "excluirAvaliacao":
-        $dto = new AvaliacaoDTO();
-        $dto->id = $dados->id ?? 0;
+        session_start();
+        if (!isset($_SESSION['candidato'])) {
+            http_response_code(401);
+            echo json_encode(['sucesso' => false, 'mensagem' => 'Faça login como candidato.'], JSON_UNESCAPED_UNICODE);
+            break;
+        }
+        $id = (int)($dados->id ?? 0);
+        if ($id <= 0) {
+            http_response_code(400);
+            echo json_encode(['sucesso' => false, 'mensagem' => 'ID inválido.'], JSON_UNESCAPED_UNICODE);
+            break;
+        }
         try {
-            (new AvaliacaoControlador())->excluir($dto->id);
-            http_response_code(200);
-            echo json_encode(['sucesso'=>true,'mensagem'=>'Exclusão realizada com sucesso','redirecionar'=>'../index.html'], JSON_UNESCAPED_UNICODE);
+            $controlador = new AvaliacaoControlador();
+            $registro = $controlador->buscarPeloId($id);
+            if (!$registro) {
+                http_response_code(404);
+                echo json_encode(['sucesso' => false, 'mensagem' => 'Avaliação não encontrada.'], JSON_UNESCAPED_UNICODE);
+                break;
+            }
+            $autorId = (int)$_SESSION['candidato']->getId();
+            if ((int)$registro->getCandidatoId() !== $autorId) {
+                http_response_code(403);
+                echo json_encode(['sucesso' => false, 'mensagem' => 'Somente o autor pode alterar esta avaliação.'], JSON_UNESCAPED_UNICODE);
+                break;
+            }
+            if ($acao === "editarAvaliacao") {
+                $nota = (int)($dados->nota ?? 0);
+                if ($nota < 1 || $nota > 5) {
+                    http_response_code(400);
+                    echo json_encode(['sucesso' => false, 'mensagem' => 'A nota deve estar entre 1 e 5.'], JSON_UNESCAPED_UNICODE);
+                    break;
+                }
+                $dto = new AvaliacaoDTO();
+                $dto->id = $id;
+                $dto->nota = $nota;
+                $dto->comentario = $dados->comentario ?? '';
+                $dto->possuiRampa = $dados->possuiRampa ?? 0;
+                $dto->possuiBanheiroAdaptado = $dados->possuiBanheiroAdaptado ?? 0;
+                $dto->possuiSinalizacaoBraile = $dados->possuiSinalizacaoBraile ?? 0;
+                $dto->possuiAcessibilidadeDigital = $dados->possuiAcessibilidadeDigital ?? 0;
+                $controlador->editar($dto, $autorId);
+                echo json_encode(['sucesso' => true, 'mensagem' => 'Avaliação editada com sucesso.'], JSON_UNESCAPED_UNICODE);
+            } else {
+                $controlador->excluir($id, $autorId);
+                echo json_encode(['sucesso' => true, 'mensagem' => 'Avaliação excluída com sucesso.'], JSON_UNESCAPED_UNICODE);
+            }
         } catch (Throwable $erro) {
             http_response_code(400);
-            echo json_encode(['sucesso'=>false,'mensagem'=>$erro->getMessage()], JSON_UNESCAPED_UNICODE);
+            echo json_encode(['sucesso' => false, 'mensagem' => $erro->getMessage()], JSON_UNESCAPED_UNICODE);
         }
         break;
     case "buscarEmpresa":
@@ -259,10 +283,12 @@ switch ($acao) {
         break;
     case "buscarAvaliacoes":
         try {
+            session_start();
+            $autorId = isset($_SESSION['candidato']) ? (int)$_SESSION['candidato']->getId() : 0;
             $objetos=(new AvaliacaoControlador())->buscarPorEmpresa($dados->empresaId ?? 0);
             $lista=[];
             foreach($objetos as $obj) {
-                $lista[]=['id'=>$obj->getId(),'nota'=>$obj->getNota(),'comentario'=>$obj->getComentario(),'possuiRampa'=>$obj->getPossuiRampa(),'possuiBanheiroAdaptado'=>$obj->getPossuiBanheiroAdaptado(),'possuiSinalizacaoBraile'=>$obj->getPossuiSinalizacaoBraile(),'possuiAcessibilidadeDigital'=>$obj->getPossuiAcessibilidadeDigital(),'dataAvaliacao'=>$obj->getDataAvaliacao()];
+                $lista[]=['id'=>$obj->getId(),'nota'=>$obj->getNota(),'comentario'=>$obj->getComentario(),'possuiRampa'=>$obj->getPossuiRampa(),'possuiBanheiroAdaptado'=>$obj->getPossuiBanheiroAdaptado(),'possuiSinalizacaoBraile'=>$obj->getPossuiSinalizacaoBraile(),'possuiAcessibilidadeDigital'=>$obj->getPossuiAcessibilidadeDigital(),'dataAvaliacao'=>$obj->getDataAvaliacao(), 'podeEditar'=>$autorId > 0 && (int)$obj->getCandidatoId() === $autorId];
             }
             echo json_encode(['sucesso'=>true,'avaliacoes'=>$lista],JSON_UNESCAPED_UNICODE);
         } catch (Throwable $erro) {

@@ -25,18 +25,18 @@ class AvaliacaoServico{
         return $avaliacaoDAO->buscarPeloId($id, $conn);
     }
 
-    public function editar($avaliacao){
+    public function editar($avaliacao, $autorId){
         $conn = Conexao::criar();
         $avaliacaoDAO = new AvaliacaoDAO();
 
-        $avaliacaoDAO->editar($avaliacao, $conn);
+        $avaliacaoDAO->editar($avaliacao, $autorId, $conn);
     }
 
-    public function excluir($id){
+    public function excluir($id, $autorId){
         $conn = Conexao::criar();
         $avaliacaoDAO = new AvaliacaoDAO();
 
-        $avaliacaoDAO->excluir($id, $conn);
+        $avaliacaoDAO->excluir($id, $autorId, $conn);
     }
 }
 ?>
